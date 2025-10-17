@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeGallery();
     initializePaintProcess();
     initializeColorPicker();
+    initializeTermsToggle();
+
 });
 
 // Scroll animations
@@ -496,3 +498,15 @@ window.SkyArtCreations = {
     updateAircraftColor,
     planeColor
 };
+// === Collapsible Terms (Factuurvoorwaarden) ===
+function initializeTermsToggle() {
+  const btn = document.getElementById('termsToggle');
+  const content = document.getElementById('termsContent');
+  if (!btn || !content) return;
+
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    content.hidden = open;
+  });
+}
