@@ -1,34 +1,34 @@
 // Wacht tot de pagina volledig is geladen
 document.addEventListener('DOMContentLoaded', function() {
-    // Haal alle zoombare afbeeldingen op
+    // Selecteer ALLE afbeeldingen met de juiste class uit jouw HTML
     const images = document.querySelectorAll('.comparison-image');
     const modal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImg');
-    const closeBtn = document.querySelector('.close');
+    const closeBtn = document.querySelector('#imageModal .close');
 
-    // Voeg click event toe aan alle afbeeldingen
+    // Klik op afbeelding → toon modal
     images.forEach(img => {
         img.addEventListener('click', function() {
-            modal.style.display = "block";
             modalImg.src = this.src;
+            modal.style.display = "flex"; // gebruik flex zodat het in het midden staat
         });
     });
 
-    // Sluit modal wanneer op X wordt geklikt
+    // Klik op X → sluit modal
     closeBtn.addEventListener('click', function() {
         modal.style.display = "none";
     });
 
-    // Sluit modal wanneer buiten de afbeelding wordt geklikt
+    // Klik buiten de afbeelding → sluit modal
     modal.addEventListener('click', function(e) {
         if (e.target === modal) {
             modal.style.display = "none";
         }
     });
 
-    // Sluit modal met escape toets
+    // Druk op Escape → sluit modal
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.style.display === "block") {
+        if (e.key === 'Escape' && modal.style.display === "flex") {
             modal.style.display = "none";
         }
     });
