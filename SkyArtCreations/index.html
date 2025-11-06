@@ -660,14 +660,20 @@
         </div>
     </div>
 </footer>
-<div id="imageModal" class="modal" style="display: none;">
+<div id="imageModal" class="modal">
     <span class="close">&times;</span>
-    <img class="modal-content" id="modalImg" alt="Vergrote afbeelding">
+    <img class="modal-content" id="modalImg">
+</div>
+<div id="imageOverlay" class="overlay">
+    <span class="close-overlay">&times;</span>
+    <img id="overlayImg" class="overlay-content" alt="Vergrote afbeelding">
 </div>
 
-<!-- Custom JavaScript -->
-<script src="skyArt.js"></script>
 
-<script src="Vergroten.js"></script>
+<!-- Scripts (volgorde: eerst skyArt, dan Vergroten) -->
+<script src="skyArt.js"></script>
+<!--<script src="Vergroten.js"></script>-->
+
+
 </body>
 </html>
