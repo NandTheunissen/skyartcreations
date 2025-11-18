@@ -1,5 +1,0 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home/skyawxgi/public_html/
-    - /bin/rsync -av --exclude='.git' --exclude='.cpanel.yml' ./ $DEPLOYPATH
