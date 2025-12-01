@@ -9,27 +9,29 @@
 
 :root {
     /* Color Palette */
-    --sky-blue: #0ea5e9;
-    --sky-blue-light: #7dd3fc;
-    --sky-blue-dark: #0284c7;
-    --aviation-gray: #374151;
-    --aviation-gray-light: #e5e7eb;
+    --sky-blue: #38bdf8;              /* primair blauw */
+    --sky-blue-light: #bae6fd;        /* lichte variant voor achtergronden */
+    --sky-blue-dark: #0ea5e9;         /* donkerder accent */
+    --accent-orange: #f97316;         /* warme accentkleur */
+    --aviation-gray: #020617;         /* heel donker blauw/zwart voor hero/footer */
+    --aviation-gray-light: #e5e7eb;   /* lichtgrijs voor vlakken */
     --white: #ffffff;
     --text-gray: #6b7280;
-    --text-dark: #1f2937;
+    --text-dark: #0f172a;
 
     /* Gradients */
     --gradient-sky: linear-gradient(135deg, var(--sky-blue), var(--sky-blue-dark));
-    --gradient-hero: linear-gradient(135deg, rgba(14, 165, 233, 0.9), rgba(55, 65, 81, 0.8));
+    --gradient-hero: linear-gradient(135deg, rgba(2, 6, 23, 0.95), rgba(56, 189, 248, 0.85));
 
     /* Shadows */
-    --shadow-elegant: 0 20px 40px -10px rgba(14, 165, 233, 0.3);
-    --shadow-aircraft: 0 25px 50px -12px rgba(55, 65, 81, 0.4);
+    --shadow-elegant: 0 20px 40px -10px rgba(56, 189, 248, 0.35);
+    --shadow-aircraft: 0 25px 50px -12px rgba(15, 23, 42, 0.5);
 
     /* Transitions */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-aircraft: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 
 html {
     scroll-behavior: smooth;
@@ -40,12 +42,16 @@ body {
     line-height: 1.6;
     color: var(--text-dark);
     overflow-x: hidden;
+    background: var(--gradient-sky);
+
 }
+
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    
 }
 
 /* Hero Section */
@@ -56,6 +62,8 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background: radial-gradient(circle at top, rgba(56, 189, 248, 0.22), transparent);
+
 }
 
 .hero-background {
@@ -76,9 +84,17 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--gradient-hero);
 
+    /* Nieuwe professionele gradient (donker aviation + modern blauw) */
+    background: linear-gradient(
+        135deg,
+        rgba(2, 6, 23, 0.92),   /* bijna zwart-blauw (aviation) */
+        rgba(56, 189, 248, 0.35) /* sky blue glow */
+    );
+
+    pointer-events: none;
 }
+
 
 .hero-content {
     position: relative;
@@ -1138,5 +1154,66 @@ body {
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
   color: var(--sky-blue);
+}
+
+/* ------------------------------ */
+/* OPDRACHT AANVRAGEN SECTION */
+/* ------------------------------ */
+
+.project-request-section {
+    padding: 80px 0;
+    background: #f0f7fc; /* lichte blauwachtige achtergrond */
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.request-title {
+    font-size: 2.5rem;
+    color: #0ea5e9;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.request-subtitle {
+    font-size: 1.2rem;
+    color: #475569;
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+}
+
+.request-button-wrapper {
+    margin-top: 20px;
+}
+
+.request-btn {
+    display: inline-block;
+    background: #0ea5e9;
+    color: white;
+    padding: 16px 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: 0.25s ease;
+    box-shadow: 0 4px 14px rgba(14, 165, 233, 0.25);
+}
+
+.request-btn:hover {
+    background: #0284c7;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(14, 165, 233, 0.35);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .request-title {
+        font-size: 2rem;
+    }
+
+    .request-btn {
+        font-size: 1.1rem;
+        padding: 14px 24px;
+    }
 }
 
