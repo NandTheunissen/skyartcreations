@@ -1,512 +1,306 @@
-// Sky Art Creations - JavaScript Functions
+// ============================================================
+// Sky Art Creations — JavaScript (alleen voor index.html)
+// ============================================================
 
-// Global variables
 let currentSlide = 0;
-let isAnimating = false;
-let currentPaintLayer = 0;
-let planeColor = '#0ea5e9';
-const images = [
-    'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1583829932564-d6d8a25da1e5?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=600&fit=crop'
-];
+let filteredSlides = [];
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initializeAnimations();
-    initializeGallery();
-    initializePaintProcess();
-    initializeColorPicker();
-    initializeTermsToggle();
-
+document.addEventListener('DOMContentLoaded', function () {
+    initNav();
+    initHeroParticles();
+    initScrollAnimations();
+    initCounters();
+    initGalleryTabs();
+    initImageModal();
+    initLoadScreen();
+    initCookieBanner();
 });
 
-// Scroll animations
-function initializeAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+// ---------------- NAVIGATIE ----------------
+function initNav() {
+    const nav    = document.getElementById('siteNav');
+    const burger = document.getElementById('hamburger');
+    const tabs   = document.getElementById('navTabs');
+    const links  = document.querySelectorAll('.nav-tab-link');
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
+    window.addEventListener('scroll', () => {
+        if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
+        updateActiveTab();
+    }, { passive: true });
+
+    if (burger && tabs) {
+        burger.addEventListener('click', () => {
+            tabs.classList.toggle('open');
+            const open = tabs.classList.contains('open');
+            const sp = burger.querySelectorAll('span');
+            sp[0].style.transform = open ? 'rotate(45deg) translate(5px,5px)' : '';
+            sp[1].style.opacity   = open ? '0' : '1';
+            sp[2].style.transform = open ? 'rotate(-45deg) translate(5px,-5px)' : '';
         });
-    }, observerOptions);
+    }
+    links.forEach(a => a.addEventListener('click', () => tabs && tabs.classList.remove('open')));
+}
 
-    // Observe all fade-in elements
-    document.querySelectorAll('.fade-in').forEach(el => {
-        observer.observe(el);
+function updateActiveTab() {
+    const sections = ['hero','about','services','gallery','comparison','color-tool','project-request','contact'];
+    let current = '';
+    sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 200) current = id;
+    });
+    document.querySelectorAll('.nav-tab-link').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
     });
 }
 
-// Smooth scroll to contact section
-function scrollToContact() {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-        contactSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+// ---------------- DEELTJES ----------------
+function initHeroParticles() {
+    const container = document.getElementById('heroParticles');
+    if (!container) return;
+    for (let i = 0; i < 25; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        const size = Math.random() * 4 + 1;
+        Object.assign(p.style, {
+            width: size + 'px',
+            height: size + 'px',
+            left: Math.random() * 100 + '%',
+            animationDelay: Math.random() * 15 + 's',
+            animationDuration: Math.random() * 15 + 10 + 's',
         });
+        container.appendChild(p);
     }
 }
 
-// Gallery Functions
-function initializeGallery() {
-    const slides = document.querySelectorAll('.gallery-slide');
-    const indicators = document.querySelectorAll('.indicator');
+// ---------------- SCROLL-ANIMATIES ----------------
+function initScrollAnimations() {
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            const siblings = e.target.parentElement.querySelectorAll('.fade-in:not(.visible)');
+            let delay = 0;
+            siblings.forEach(s => {
+                if (s === e.target || s.getBoundingClientRect().top < window.innerHeight) {
+                    s.style.transitionDelay = delay + 'ms';
+                    s.classList.add('visible');
+                    delay += 100;
+                }
+            });
+            e.target.classList.add('visible');
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-    // Show first slide
-    if (slides.length > 0) {
-        slides[0].classList.add('active');
-    }
-
-    if (indicators.length > 0) {
-        indicators[0].classList.add('active');
-    }
-
-    // Initialize comparison content
-    updateComparisonContent();
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 }
 
-// Color Picker Functions
-function initializeColorPicker() {
-    const colorPicker = document.getElementById('colorPicker');
-    const colorPresets = document.querySelectorAll('.color-preset');
-    const aircraftOverlay = document.getElementById('aircraftColorOverlay');
-
-    // Initialize with default color
-    updateAircraftColor(planeColor);
-
-    // Color picker input handler
-    if (colorPicker) {
-        colorPicker.addEventListener('input', function(e) {
-            planeColor = e.target.value;
-            updateAircraftColor(planeColor);
-        });
-    }
-
-    // Color preset handlers
-    colorPresets.forEach(preset => {
-        preset.addEventListener('click', function() {
-            const color = this.dataset.color;
-            planeColor = color;
-            updateAircraftColor(color);
-            if (colorPicker) {
-                colorPicker.value = color;
+// ---------------- TELLERS ----------------
+function initCounters() {
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                animateCounter(e.target);
+                observer.unobserve(e.target);
             }
         });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.stat-number[data-target]').forEach(el => observer.observe(el));
+}
+
+function animateCounter(el) {
+    const target = parseInt(el.getAttribute('data-target'), 10);
+    const suffix = el.dataset.suffix ?? '+';
+    const duration = 1600;
+    const start = performance.now();
+    function step(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+}
+
+// ---------------- GALERIJ ----------------
+function initGalleryTabs() {
+    const tabBtns = document.querySelectorAll('.gallery-tab-btn');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            filterGallery(this.getAttribute('data-category'));
+        });
     });
+    filterGallery('all');
 }
 
-function updateAircraftColor(color) {
-    const aircraftOverlay = document.getElementById('aircraftColorOverlay');
-    const basecoatLayer = document.getElementById('basecoatLayer');
-    const designLayer = document.getElementById('designLayer');
-    const effectLayer = document.getElementById('effectLayer'); // <-- nieuwe laag
-
-    // Voor overlay
-    if (aircraftOverlay) {
-        aircraftOverlay.style.background = color;
-    }
-
-    // Basecoat met transparantie
-    if (basecoatLayer) {
-        basecoatLayer.style.background = `${color}cc`; // cc = ±80% opacity
-    }
-
-    // Designlaag met gradient
-    if (designLayer) {
-        const [r, g, b] = hexToRgb(color);
-        const gradientColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
-        designLayer.style.background = `linear-gradient(135deg, ${gradientColor}, ${color}dd)`;
-    }
-
-    // Nieuw: effectlaag met lichte glans
-    if (effectLayer) {
-        const [r, g, b] = hexToRgb(color);
-        effectLayer.style.background = `radial-gradient(circle at center, rgba(${r}, ${g}, ${b}, 0.2), transparent)`;
-        effectLayer.style.opacity = 0.2;
-    }
+function filterGallery(category) {
+    filteredSlides = [];
+    document.querySelectorAll('.gallery-slide').forEach(slide => {
+        const cat = slide.getAttribute('data-category');
+        if (category === 'all' || cat === category) filteredSlides.push(slide);
+    });
+    currentSlide = 0;
+    renderVisibleSlide();
+    buildIndicators();
 }
 
-
-function hexToRgb(hex) {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-    ] : [14, 165, 233]; // fallback to sky-blue
+function renderVisibleSlide() {
+    document.querySelectorAll('.gallery-slide').forEach(s => s.classList.remove('active'));
+    if (filteredSlides.length > 0) filteredSlides[currentSlide].classList.add('active');
+    updateIndicators();
 }
 
-// Enhanced Gallery Functions with wrap-around
 function nextSlide() {
-    const slides = document.querySelectorAll('.gallery-slide');
-    const indicators = document.querySelectorAll('.indicator');
-
-    if (slides.length === 0) return;
-
-    // Remove active class from current slide and indicator
-    slides[currentSlide].classList.remove('active');
-    if (indicators[currentSlide]) {
-        indicators[currentSlide].classList.remove('active');
-    }
-
-    // Move to next slide (wrap around)
-    currentSlide = (currentSlide + 1) % slides.length;
-
-    // Add active class to new slide and indicator
-    slides[currentSlide].classList.add('active');
-    if (indicators[currentSlide]) {
-        indicators[currentSlide].classList.add('active');
-    }
-
-    // Update comparison content
-    updateComparisonContent();
+    if (!filteredSlides.length) return;
+    currentSlide = (currentSlide + 1) % filteredSlides.length;
+    renderVisibleSlide();
 }
 
 function previousSlide() {
-    const slides = document.querySelectorAll('.gallery-slide');
-    const indicators = document.querySelectorAll('.indicator');
-
-    if (slides.length === 0) return;
-
-    // Remove active class from current slide and indicator
-    slides[currentSlide].classList.remove('active');
-    if (indicators[currentSlide]) {
-        indicators[currentSlide].classList.remove('active');
-    }
-
-    // Move to previous slide (wrap around)
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-
-    // Add active class to new slide and indicator
-    slides[currentSlide].classList.add('active');
-    if (indicators[currentSlide]) {
-        indicators[currentSlide].classList.add('active');
-    }
-
-    // Update comparison content
-    updateComparisonContent();
+    if (!filteredSlides.length) return;
+    currentSlide = (currentSlide - 1 + filteredSlides.length) % filteredSlides.length;
+    renderVisibleSlide();
 }
 
-function goToSlide(slideIndex) {
-    const slides = document.querySelectorAll('.gallery-slide');
-    const indicators = document.querySelectorAll('.indicator');
-
-    if (slideIndex >= slides.length || slideIndex < 0) return;
-
-    // Remove active class from current slide and indicator
-    slides[currentSlide].classList.remove('active');
-    if (indicators[currentSlide]) {
-        indicators[currentSlide].classList.remove('active');
-    }
-
-    // Set new current slide
-    currentSlide = slideIndex;
-
-    // Add active class to new slide and indicator
-    slides[currentSlide].classList.add('active');
-    if (indicators[currentSlide]) {
-        indicators[currentSlide].classList.add('active');
-    }
-
-    // Update comparison content
-    updateComparisonContent();
+function goToSlide(index) {
+    if (index < 0 || index >= filteredSlides.length) return;
+    currentSlide = index;
+    renderVisibleSlide();
 }
 
-function updateComparisonContent() {
-    const comparisonList = document.getElementById('comparisonList');
+function buildIndicators() {
+    const container = document.getElementById('galleryIndicators');
+    if (!container) return;
+    container.innerHTML = '';
+    filteredSlides.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.classList.add('indicator');
+        btn.setAttribute('aria-label', 'Ga naar dia ' + (i + 1));
+        if (i === currentSlide) btn.classList.add('active');
+        btn.addEventListener('click', () => goToSlide(i));
+        container.appendChild(btn);
+    });
+}
 
-    const projectComparisons = [
-        ['Gebruik van milieuvriendelijke lakken', 'Meerdere beschermende lagen', 'Custom kleurschema\'s op maat', 'Professionele voorbereiding van het oppervlak', 'Kwaliteitscontrole in elke fase'],
-        ['Premium materialen voor luxe uitstraling', 'Metallic accenten voor elegantie', 'UV-resistente topcoat', 'Handmatige afwerking van details', 'Certificering volgens luchtvaartnormen'],
-        ['Klassieke kleurcombinaties', 'Hoogglans polijsting', 'Weerbestendige coating', 'Snelle droogtijd materialen', 'Garantie op kleurechtheid'],
-        ['Moderne striping technieken', 'Robuuste helikopter coating', 'Anti-statische behandeling', 'Corrosiebestendige primer', 'Periodieke onderhoudsinstructies']
-    ];
+function updateIndicators() {
+    document.querySelectorAll('#galleryIndicators .indicator').forEach((ind, i) => {
+        ind.classList.toggle('active', i === currentSlide);
+    });
+}
 
-    if (comparisonList && projectComparisons[currentSlide]) {
-        comparisonList.innerHTML = '';
-        projectComparisons[currentSlide].forEach(item => {
-            const li = document.createElement('li');
-            li.textContent = item;
-            comparisonList.appendChild(li);
+// ---------------- AFBEELDING VERGROTEN ----------------
+function initImageModal() {
+    const modal    = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    const closeBtn = document.querySelector('#imageModal .close');
+    if (!modal) return;
+
+    document.querySelectorAll('.comparison-image').forEach(img => {
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', function () {
+            modal.style.display = 'flex';
+            modalImg.src = this.src;
+            document.body.style.overflow = 'hidden';
         });
-    }
-}
-
-// Paint Process Animation
-function initializePaintProcess() {
-    // Reset all layers
-    const layers = document.querySelectorAll('.paint-layer');
-    const steps = document.querySelectorAll('.process-step');
-    const layerInfo = document.getElementById('layerInfo');
-
-    layers.forEach(layer => {
-        layer.classList.remove('animate');
     });
 
-    steps.forEach(step => {
-        step.classList.remove('active');
-    });
-
-    if (layerInfo) {
-        layerInfo.classList.remove('show');
+    function closeModal() {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
     }
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 }
 
-function startPaintAnimation() {
-    if (isAnimating) return;
-
-    isAnimating = true;
-    currentPaintLayer = 0;
-
-    const button = document.getElementById('paintButton');
-    const layerInfo = document.getElementById('layerInfo');
-    const layerName = document.getElementById('layerName');
-    const layerDescription = document.getElementById('layerDescription');
-
-    const layers = [
-        {
-            element: document.getElementById('primerLayer'),
-            step: document.getElementById('step0'),
-            name: 'Primer',
-            description: 'Basis beschermlaag wordt aangebracht'
-        },
-        {
-            element: document.getElementById('basecoatLayer'),
-            step: document.getElementById('step1'),
-            name: 'Basecoat',
-            description: 'Kleur foundation wordt toegepast'
-        },
-        {
-            element: document.getElementById('designLayer'),
-            step: document.getElementById('step2'),
-            name: 'Custom Design',
-            description: 'Unieke afwerking wordt aangebracht'
-        },
-        {
-            element: document.getElementById('clearcoatLayer'),
-            step: document.getElementById('step3'),
-            name: 'Clear Coat',
-            description: 'Beschermende toplaag wordt afgewerkt'
-        }
-    ];
-
-    // Reset everything
-    initializePaintProcess();
-
-    // Update button
-    if (button) {
-        button.textContent = 'Lakken in uitvoering...';
-        button.disabled = true;
-    }
-
-    // Show layer info
-    if (layerInfo) {
-        layerInfo.classList.add('show');
-    }
-
-    // Animate each layer
-    function animateNextLayer() {
-        if (currentPaintLayer >= layers.length) {
-            // Animation complete
-            setTimeout(() => {
-                if (button) {
-                    button.textContent = 'Start Lakproces Animatie';
-                    button.disabled = false;
-                }
-
-                if (layerName && layerDescription) {
-                    layerName.textContent = 'Klaar!';
-                    layerDescription.textContent = 'Het lakproces is voltooid';
-                }
-
-                // Reset after 3 seconds
-                setTimeout(() => {
-                    initializePaintProcess();
-                    if (layerName && layerDescription) {
-                        layerName.textContent = 'Klik om te starten';
-                        layerDescription.textContent = 'Bekijk het lakproces stap voor stap';
-                    }
-                    isAnimating = false;
-                }, 3000);
-            }, 1000);
-            return;
-        }
-
-        const current = layers[currentPaintLayer];
-
-        // Update info
-        if (layerName && layerDescription) {
-            layerName.textContent = current.name;
-            layerDescription.textContent = current.description;
-        }
-
-        // Activate step
-        if (current.step) {
-            current.step.classList.add('active');
-        }
-
-        // Animate layer
-        if (current.element) {
-            current.element.classList.add('animate');
-        }
-
-        currentPaintLayer++;
-
-        // Schedule next layer
-        setTimeout(animateNextLayer, 2000);
-    }
-
-    // Start animation
-    setTimeout(animateNextLayer, 500);
+// ---------------- SCROLLEN ----------------
+function scrollToContact() {
+    const el = document.getElementById('project-request');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// Auto-advance gallery (optional)
-function startGalleryAutoplay() {
-    setInterval(nextSlide, 5000); // Change slide every 5 seconds
-}
-
-// Keyboard navigation for gallery
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowLeft') {
-        previousSlide();
-    } else if (e.key === 'ArrowRight') {
-        nextSlide();
-    } else if (e.key === ' ' || e.key === 'Enter') {
-        if (e.target.id === 'paintButton') {
-            e.preventDefault();
-            startPaintAnimation();
-        }
-    }
-});
-
-// Touch/swipe support for gallery
-let touchStartX = 0;
-let touchEndX = 0;
-
-const galleryContainer = document.getElementById('galleryContainer');
-
-if (galleryContainer) {
-    galleryContainer.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-    });
-
-    galleryContainer.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    });
-}
-
-function handleSwipe() {
-    const swipeThreshold = 50;
-    const diff = touchStartX - touchEndX;
-
-    if (Math.abs(diff) > swipeThreshold) {
-        if (diff > 0) {
-            nextSlide(); // Swipe left
-        } else {
-            previousSlide(); // Swipe right
-        }
-    }
-}
-
-// Smooth scroll for all internal links
-document.addEventListener('click', function(e) {
-    if (e.target.tagName === 'A' && e.target.getAttribute('href')?.startsWith('#')) {
+document.addEventListener('click', function (e) {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute('href');
+    if (id.length < 2) return;
+    const target = document.querySelector(id);
+    if (target) {
         e.preventDefault();
-        const targetId = e.target.getAttribute('href').slice(1);
-        const targetElement = document.getElementById(targetId);
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+});
 
-        if (targetElement) {
-            targetElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+// ---------------- LAADSCHERM (alleen bij eerste bezoek per sessie) ----------------
+function initLoadScreen() {
+    const screen  = document.getElementById('loadScreen');
+    const starsEl = document.getElementById('lsStars');
+    if (!screen) return;
+
+    let seen = false;
+    try { seen = sessionStorage.getItem('skyartLoaded') === '1'; } catch (e) {}
+    if (seen) { screen.remove(); return; }
+
+    if (starsEl) {
+        for (let i = 0; i < 100; i++) {
+            const s = document.createElement('div');
+            s.className = 'ls-star';
+            const size = Math.random() * 2 + 0.5;
+            s.style.cssText =
+                `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;` +
+                `animation-duration:${Math.random()*2+1}s;animation-delay:${Math.random()*3}s;`;
+            starsEl.appendChild(s);
         }
     }
-});
 
-// Performance optimization: Lazy load images
-function initializeLazyLoading() {
-    const images = document.querySelectorAll('img[data-src]');
-
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-
-    images.forEach(img => imageObserver.observe(img));
+    setTimeout(() => screen.classList.add('hidden'), 5500);
+    setTimeout(() => screen.remove(), 6500);
+    try { sessionStorage.setItem('skyartLoaded', '1'); } catch (e) {}
 }
 
-// Initialize lazy loading when DOM is ready
-document.addEventListener('DOMContentLoaded', initializeLazyLoading);
+// ---------------- GOOGLE TRANSLATE (pas na cookie-keuze "Accepteren") ----------------
+function loadTranslate() {
+    if (document.getElementById('gt-script')) return;
+    window.googleTranslateElementInit = function () {
+        new google.translate.TranslateElement(
+            { pageLanguage: 'nl', includedLanguages: 'fr,en' },
+            'google_translate_element'
+        );
+    };
+    const s = document.createElement('script');
+    s.id = 'gt-script';
+    s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    document.body.appendChild(s);
+}
 
-// Parallax effect for hero section (optional enhancement)
-window.addEventListener('scroll', function() {
-    const scrolled = window.pageYOffset;
-    const parallax = document.querySelector('.hero-background');
+// ---------------- COOKIEBANNER ----------------
+function initCookieBanner() {
+    const banner  = document.getElementById('cookieBanner');
+    const accept  = document.getElementById('cookieAccept');
+    const decline = document.getElementById('cookieDecline');
+    if (!banner) return;
 
-    if (parallax) {
-        const speed = scrolled * 0.5;
-        parallax.style.transform = `translateY(${speed}px)`;
+    let choice = null;
+    try { choice = localStorage.getItem('cookieChoice'); } catch (e) {}
+
+    if (choice === 'accepted') loadTranslate();
+
+    if (!choice) {
+        setTimeout(() => banner.classList.add('show'), 6000);
+    } else {
+        banner.remove();
     }
-});
 
-// Add loading animation
-window.addEventListener('load', function() {
-    document.body.classList.add('loaded');
-});
-
-// Error handling for missing elements
-function safeQuerySelector(selector) {
-    try {
-        return document.querySelector(selector);
-    } catch (error) {
-        console.warn(`Element not found: ${selector}`);
-        return null;
+    function dismiss(c) {
+        try { localStorage.setItem('cookieChoice', c); } catch (e) {}
+        banner.classList.remove('show');
+        banner.classList.add('hide');
+        setTimeout(() => banner.remove(), 600);
+        if (c === 'accepted') loadTranslate();
     }
+
+    if (accept)  accept.addEventListener('click',  () => dismiss('accepted'));
+    if (decline) decline.addEventListener('click', () => dismiss('declined'));
 }
 
-function safeQuerySelectorAll(selector) {
-    try {
-        return document.querySelectorAll(selector);
-    } catch (error) {
-        console.warn(`Elements not found: ${selector}`);
-        return [];
-    }
-}
-
-// Export functions for potential external use
-window.SkyArtCreations = {
-    scrollToContact,
-    nextSlide,
-    previousSlide,
-    goToSlide,
-    startPaintAnimation,
-    updateAircraftColor,
-    planeColor
-};
-// === Collapsible Terms (Factuurvoorwaarden) ===
-function initializeTermsToggle() {
-  const btn = document.getElementById('termsToggle');
-  const content = document.getElementById('termsContent');
-  if (!btn || !content) return;
-
-  btn.addEventListener('click', () => {
-    const open = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!open));
-    content.hidden = open;
-  });
-}
+window.SkyArtCreations = { scrollToContact, nextSlide, previousSlide, goToSlide };

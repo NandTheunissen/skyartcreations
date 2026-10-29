@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planning — Sky Art Creations</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#04060d;--deep:#080d1a;--panel:#0f1e35;--panel2:#132240;--navy:#0b1629;
+  --border:rgba(56,189,248,0.13);--sky:#38bdf8;--sky2:#0ea5e9;
+  --green:#10b981;--orange:#f97316;--red:#ef4444;--muted:#94a3b8;--muted2:#64748b;
+  --fd:'Rajdhani',sans-serif;--fb:'DM Sans',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--black);color:#fff;min-height:100vh;overflow-x:hidden}
+
+/* ── TOP BAR ── */
+.topbar{height:64px;background:rgba(4,6,13,.95);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);display:flex;align-items:center;
+  justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:200}
+.logo{font-family:var(--fd);font-size:1.4rem;font-weight:700;color:#fff;text-decoration:none}
+.logo span{color:var(--sky)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.mode-toggle{display:flex;background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden}
+.mode-btn{padding:8px 18px;border:none;background:transparent;color:var(--muted);
+  font-family:var(--fd);font-size:.88rem;font-weight:700;cursor:pointer;transition:all .25s;
+  display:flex;align-items:center;gap:6px;white-space:nowrap}
+.mode-btn.active{background:var(--sky2);color:#fff;box-shadow:0 0 16px rgba(14,165,233,.35)}
+.back-btn{display:inline-flex;align-items:center;gap:7px;background:rgba(56,189,248,.08);
+  border:1px solid var(--border);color:var(--sky);padding:8px 18px;border-radius:50px;
+  text-decoration:none;font-family:var(--fd);font-size:.88rem;font-weight:700;transition:all .25s;cursor:pointer}
+.back-btn:hover{background:var(--sky2);color:#fff;border-color:var(--sky2)}
+
+/* ── LAYOUT ── */
+.page{max-width:1320px;margin:0 auto;padding:36px 28px 80px}
+.page-header{margin-bottom:36px}
+.page-title{font-family:var(--fd);font-size:2.6rem;font-weight:700;
+  display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.page-title i{color:var(--sky)}
+.page-sub{color:var(--muted);font-size:1rem;font-weight:300}
+
+/* ── VIEWS ── */
+.view{display:none}
+.view.active{display:block;animation:fadeIn .4s var(--ease)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── CALENDAR ── */
+.cal-layout{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start}
+.cal-panel{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px}
+.cal-header{display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:20px;border-bottom:1px solid var(--border);margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.cal-nav{display:flex;align-items:center;gap:10px}
+.nav-arrow{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);color:#fff;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;transition:all .2s;font-size:.85rem}
+.nav-arrow:hover{background:var(--sky2);border-color:var(--sky2)}
+.cal-period{font-family:var(--fd);font-size:1.1rem;font-weight:700;min-width:200px;text-align:center}
+.view-btns{display:flex;gap:4px;background:rgba(255,255,255,.04);
+  border:1px solid var(--border);border-radius:8px;padding:3px}
+.vbtn{padding:6px 14px;border:none;background:transparent;color:var(--muted);
+  font-family:var(--fd);font-size:.82rem;font-weight:700;cursor:pointer;
+  border-radius:6px;transition:all .2s}
+.vbtn.on{background:var(--sky2);color:#fff}
+
+/* ── WEEK GRID ── */
+.week-grid{display:grid;grid-template-columns:64px repeat(7,1fr);gap:0;
+  border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.wg-head{background:rgba(56,189,248,.07);padding:10px 4px;text-align:center;
+  font-family:var(--fd);font-size:.75rem;font-weight:700;color:var(--sky);
+  letter-spacing:.05em;border:1px solid var(--border)}
+.wg-time{background:rgba(56,189,248,.04);padding:0 6px;display:flex;
+  align-items:center;justify-content:center;font-size:.72rem;font-weight:600;
+  color:var(--sky);border:1px solid var(--border);min-height:48px}
+.wg-slot{border:1px solid var(--border);min-height:48px;display:flex;
+  align-items:center;justify-content:center;font-size:.72rem;font-weight:600;
+  transition:all .2s;position:relative;cursor:default}
+.wg-slot.free{background:rgba(16,185,129,.07);color:var(--green);cursor:pointer}
+.wg-slot.free:hover{background:rgba(16,185,129,.18);transform:scale(1.02);z-index:2}
+.wg-slot.booked{background:rgba(56,189,248,.06);color:rgba(56,189,248,.5);cursor:default}
+.wg-slot.past{background:rgba(255,255,255,.02);color:rgba(255,255,255,.15);cursor:not-allowed}
+.wg-slot.pending{background:rgba(249,115,22,.08);color:var(--orange);cursor:default}
+.wg-slot.maintenance{background:rgba(239,68,68,.07);color:var(--red);cursor:default}
+.wg-slot.selected{background:var(--sky2)!important;color:#fff!important;
+  border-color:var(--sky)!important;box-shadow:inset 0 0 0 2px var(--sky)}
+.wg-slot.selected::after{content:'✓'!important;font-size:.85rem}
+.legend{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap;padding-top:14px;
+  border-top:1px solid var(--border)}
+.leg{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted)}
+.leg-dot{width:10px;height:10px;border-radius:3px}
+
+/* ── MONTH GRID ── */
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.month-head{text-align:center;font-family:var(--fd);font-size:.75rem;font-weight:700;
+  color:var(--sky);letter-spacing:.08em;padding:8px 0}
+.month-day{background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:10px;padding:8px;min-height:72px;cursor:pointer;transition:all .25s;position:relative}
+.month-day:hover{border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.05)}
+.month-day.today{border-color:var(--sky2);background:rgba(14,165,233,.08)}
+.month-day.has-free{border-color:rgba(16,185,129,.3)}
+.month-day.selected{background:rgba(14,165,233,.15);border-color:var(--sky)}
+.month-day.other-month{opacity:.3}
+.day-num{font-family:var(--fd);font-size:.95rem;font-weight:700;margin-bottom:4px}
+.day-dots{display:flex;gap:3px;flex-wrap:wrap}
+.day-dot{width:6px;height:6px;border-radius:50%}
+
+/* ── BOOKING PANEL ── */
+.book-panel{background:var(--panel);border:1px solid var(--border);border-radius:20px;
+  padding:28px;border-top:3px solid var(--sky2)}
+.panel-title{font-family:var(--fd);font-size:1.2rem;font-weight:700;color:var(--sky);
+  margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.empty-state{text-align:center;padding:40px 20px}
+.empty-icon{font-size:2.8rem;color:rgba(56,189,248,.2);margin-bottom:12px}
+.empty-t{font-family:var(--fd);font-size:1.1rem;color:#fff;margin-bottom:6px}
+.empty-d{font-size:.85rem;color:var(--muted)}
+.slot-info{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);
+  border-radius:12px;padding:16px 18px;margin-bottom:20px}
+.slot-row{display:flex;align-items:center;gap:8px;font-size:.9rem;font-weight:600;
+  color:#fff;margin-bottom:6px}
+.slot-row:last-child{margin-bottom:0}
+.slot-row i{color:var(--orange);width:16px}
+
+/* ── FORM ── */
+.form-section{margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+.form-section-title{font-family:var(--fd);font-size:.75rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-family:var(--fd);font-size:.72rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.inp{width:100%;padding:10px 14px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);border-radius:10px;color:#fff;
+  font-family:var(--fb);font-size:.9rem;transition:border-color .25s}
+.inp:focus{outline:none;border-color:var(--sky2);box-shadow:0 0 0 3px rgba(14,165,233,.12)}
+.inp::placeholder{color:rgba(148,163,184,.4)}
+.inp option{background:var(--navy)}
+.inp-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* Vehicle type selector */
+.vtype-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.vtype-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:10px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .25s}
+.vtype-btn:hover{border-color:rgba(56,189,248,.35);background:rgba(56,189,248,.06)}
+.vtype-btn.on{background:rgba(14,165,233,.15);border-color:var(--sky2);
+  box-shadow:0 0 14px rgba(14,165,233,.2)}
+.vtype-btn .vico{font-size:1.5rem;margin-bottom:4px}
+.vtype-btn .vlabel{font-family:var(--fd);font-size:.72rem;font-weight:700;
+  color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.vtype-btn.on .vlabel{color:var(--sky)}
+
+/* Color picker mini */
+.color-mini{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+.cmini-dot{width:32px;height:32px;border-radius:8px;cursor:pointer;
+  border:2px solid transparent;transition:all .2s;flex-shrink:0}
+.cmini-dot:hover{transform:scale(1.12)}
+.cmini-dot.on{border-color:#fff;box-shadow:0 0 0 2px var(--sky2),0 0 12px rgba(14,165,233,.4)}
+.cmini-custom{width:32px;height:32px;border-radius:8px;cursor:pointer;
+  border:1px dashed rgba(255,255,255,.3);background:transparent;
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;
+  color:var(--muted);transition:all .2s;flex-shrink:0}
+.cmini-custom:hover{border-color:var(--sky);color:var(--sky)}
+.color-result{margin-top:8px;display:flex;align-items:center;gap:8px}
+.color-preview{width:24px;height:24px;border-radius:6px}
+.color-label{font-size:.82rem;color:var(--muted);font-family:monospace}
+
+/* Photo upload */
+.upload-area{border:2px dashed rgba(56,189,248,.2);border-radius:12px;
+  padding:24px;text-align:center;cursor:pointer;transition:all .3s;position:relative}
+.upload-area:hover,.upload-area.drag{border-color:var(--sky2);background:rgba(14,165,233,.05)}
+.upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-ico{font-size:1.8rem;color:rgba(56,189,248,.3);margin-bottom:8px}
+.upload-txt{font-size:.82rem;color:var(--muted)}
+.upload-txt strong{color:var(--sky)}
+.preview-imgs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.prev-img{width:60px;height:60px;border-radius:8px;object-fit:cover;
+  border:1px solid var(--border);position:relative}
+.prev-img-wrap{position:relative;display:inline-block}
+.prev-remove{position:absolute;top:-5px;right:-5px;width:16px;height:16px;
+  border-radius:50%;background:var(--red);border:none;color:#fff;cursor:pointer;
+  font-size:.6rem;display:flex;align-items:center;justify-content:center;line-height:1}
+
+/* Submit btn */
+.submit-btn{width:100%;margin-top:20px;padding:14px;border:none;
+  background:linear-gradient(135deg,var(--sky2),var(--sky));color:#fff;
+  border-radius:12px;font-family:var(--fd);font-size:1rem;font-weight:700;
+  letter-spacing:.05em;cursor:pointer;transition:all .3s var(--ease);
+  display:flex;align-items:center;justify-content:center;gap:10px}
+.submit-btn:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(14,165,233,.45)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ── SUCCESS TOAST ── */
+.toast{position:fixed;bottom:28px;right:28px;z-index:9999;
+  background:var(--panel);border:1px solid rgba(16,185,129,.4);border-radius:14px;
+  padding:16px 22px;display:flex;align-items:center;gap:12px;
+  box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 0 1px rgba(16,185,129,.2);
+  transform:translateY(80px);opacity:0;transition:all .4s var(--ease);pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-ico{font-size:1.4rem}
+.toast-t{font-family:var(--fd);font-size:1rem;font-weight:700;color:#fff}
+.toast-d{font-size:.8rem;color:var(--muted);margin-top:2px}
+
+/* ── ADMIN VIEW ── */
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px}
+.admin-stat{background:var(--panel);border:1px solid var(--border);border-radius:16px;
+  padding:22px 24px;display:flex;align-items:center;gap:16px}
+.astat-ico{width:52px;height:52px;border-radius:12px;display:flex;
+  align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.astat-n{font-family:var(--fd);font-size:2rem;font-weight:700;line-height:1}
+.astat-l{font-size:.78rem;color:var(--muted);margin-top:3px}
+
+.bookings-list{display:flex;flex-direction:column;gap:12px}
+.booking-card{background:var(--panel);border:1px solid var(--border);border-radius:16px;
+  padding:20px 22px;transition:all .3s var(--ease);animation:fadeIn .4s var(--ease)}
+.booking-card:hover{border-color:rgba(56,189,248,.25);transform:translateX(4px)}
+.bc-top{display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:14px;gap:12px;flex-wrap:wrap}
+.bc-name{font-family:var(--fd);font-size:1.2rem;font-weight:700}
+.bc-vehicle{font-size:.82rem;color:var(--muted);margin-top:2px}
+.bc-badge{padding:4px 12px;border-radius:50px;font-family:var(--fd);
+  font-size:.72rem;font-weight:700;letter-spacing:.06em;white-space:nowrap}
+.badge-pending{background:rgba(249,115,22,.15);color:var(--orange);border:1px solid rgba(249,115,22,.3)}
+.badge-confirmed{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3)}
+.badge-done{background:rgba(148,163,184,.1);color:var(--muted);border:1px solid rgba(148,163,184,.2)}
+.bc-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:10px;margin-bottom:14px}
+.bc-det{font-size:.82rem;color:var(--muted)}
+.bc-det strong{display:block;color:#fff;font-size:.88rem;font-weight:500;margin-top:2px}
+.bc-color{display:inline-block;width:16px;height:16px;border-radius:4px;
+  vertical-align:middle;margin-right:6px}
+.bc-actions{display:flex;gap:8px;flex-wrap:wrap}
+.act-btn{padding:7px 16px;border-radius:8px;border:none;font-family:var(--fd);
+  font-size:.78rem;font-weight:700;cursor:pointer;transition:all .25s;
+  display:flex;align-items:center;gap:6px}
+.act-confirm{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3)}
+.act-confirm:hover{background:var(--green);color:#fff}
+.act-reject{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.25)}
+.act-reject:hover{background:var(--red);color:#fff}
+.act-done{background:rgba(56,189,248,.1);color:var(--sky);border:1px solid rgba(56,189,248,.2)}
+.act-done:hover{background:var(--sky2);color:#fff}
+.act-edit{background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--border)}
+.act-edit:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* Admin slot editor */
+.slot-editor{background:var(--panel);border:1px solid var(--border);
+  border-radius:16px;padding:22px;margin-bottom:24px}
+.se-title{font-family:var(--fd);font-size:1rem;font-weight:700;
+  color:var(--sky);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.se-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
+.se-slot{border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;
+  font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.04em;
+  border:1.5px solid transparent;transition:all .2s}
+.se-slot.free{background:rgba(16,185,129,.08);color:var(--green);border-color:rgba(16,185,129,.2)}
+.se-slot.blocked{background:rgba(239,68,68,.08);color:var(--red);border-color:rgba(239,68,68,.2)}
+.se-slot.maintenance{background:rgba(249,115,22,.08);color:var(--orange);border-color:rgba(249,115,22,.2)}
+.se-slot:hover{transform:scale(1.06);filter:brightness(1.2)}
+.se-legend{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.se-leg{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--muted);cursor:pointer;
+  padding:4px 10px;border-radius:6px;border:1px solid var(--border);transition:all .2s}
+.se-leg:hover{border-color:rgba(56,189,248,.3);color:#fff}
+.se-leg.sel{border-color:var(--sky2);color:var(--sky);background:rgba(14,165,233,.08)}
+.se-dot{width:8px;height:8px;border-radius:2px}
+
+/* Filter bar */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+.filt-btn{padding:7px 16px;border-radius:50px;background:rgba(255,255,255,.04);
+  border:1px solid var(--border);color:var(--muted);font-family:var(--fd);
+  font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s}
+.filt-btn.on{background:var(--sky2);color:#fff;border-color:transparent}
+.filt-sep{flex:1}
+.search-inp{padding:8px 14px;background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:10px;color:#fff;font-family:var(--fb);font-size:.85rem;width:200px}
+.search-inp:focus{outline:none;border-color:var(--sky2)}
+.search-inp::placeholder{color:rgba(148,163,184,.4)}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;
+  backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal{background:var(--panel);border:1px solid var(--border);border-radius:20px;
+  padding:32px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;
+  transform:scale(.9);transition:transform .3s var(--ease)}
+.modal-bg.open .modal{transform:scale(1)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.modal-title{font-family:var(--fd);font-size:1.4rem;font-weight:700}
+.modal-close{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);
+  border:none;color:var(--muted);cursor:pointer;font-size:1rem;transition:all .2s;
+  display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:rgba(239,68,68,.2);color:var(--red)}
+
+/* Responsive */
+@media(max-width:1024px){.cal-layout{grid-template-columns:1fr}}
+@media(max-width:768px){
+  .admin-grid{grid-template-columns:1fr 1fr}
+  .topbar{padding:0 16px}
+  .page{padding:24px 16px 60px}
+  .week-grid{font-size:.65rem}
+}
+@media(max-width:480px){
+  .admin-grid{grid-template-columns:1fr}
+  .inp-row{grid-template-columns:1fr}
+  .vtype-grid{grid-template-columns:repeat(3,1fr)}
+  .mode-btn span{display:none}
+}
+
+/* ── ADMIN LOCK MODAL ── */
+.lock-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9000;
+  backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.lock-modal-bg.open{opacity:1;pointer-events:all}
+.lock-modal{background:var(--panel);border:1px solid rgba(56,189,248,.25);
+  border-top:3px solid var(--sky2);border-radius:20px;padding:40px 36px;
+  max-width:380px;width:100%;text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 40px rgba(14,165,233,.1)}
+.lock-icon{font-size:2.8rem;margin-bottom:16px}
+.lock-title{font-family:var(--fd);font-size:1.6rem;font-weight:700;margin-bottom:6px}
+.lock-sub{font-size:.88rem;color:var(--muted);margin-bottom:28px}
+.lock-inp{width:100%;padding:14px;background:rgba(255,255,255,.06);
+  border:2px solid var(--border);border-radius:12px;color:#fff;
+  font-family:var(--fd);font-size:1.4rem;font-weight:700;text-align:center;
+  letter-spacing:.3em;transition:border-color .25s}
+.lock-inp:focus{outline:none;border-color:var(--sky2);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+.lock-error{color:var(--red);font-size:.82rem;margin-top:10px;display:none}
+.lock-btn{width:100%;margin-top:18px;padding:13px;border:none;
+  background:linear-gradient(135deg,var(--sky2),var(--sky));color:#fff;
+  border-radius:12px;font-family:var(--fd);font-size:1rem;font-weight:700;
+  letter-spacing:.05em;cursor:pointer;transition:all .3s}
+.lock-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(14,165,233,.4)}
+.lock-cancel{margin-top:10px;background:none;border:none;color:var(--muted);
+  font-size:.82rem;cursor:pointer;font-family:var(--fb);transition:color .2s}
+.lock-cancel:hover{color:#fff}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="index.html" class="logo">Sky <span>Art</span></a>
+  <div class="topbar-right">
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btnKlant" onclick="setMode('klant')">
+        <i class="fas fa-user"></i><span>Klant</span>
+      </button>
+      <button class="mode-btn" id="btnAdmin" onclick="setMode('admin')">
+        <i class="fas fa-shield-alt"></i><span>Admin</span>
+      </button>
+    </div>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Terug</a>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ════════════════════════════════
+       KLANT VIEW
+  ════════════════════════════════ -->
+  <div class="view active" id="viewKlant">
+    <div class="page-header">
+      <div class="page-title"><i class="fas fa-calendar-alt"></i> Reserveer uw tijdslot</div>
+      <div class="page-sub">Kies een beschikbaar slot en vul uw projectdetails in — wij nemen contact op ter bevestiging.</div>
+    </div>
+
+    <div class="cal-layout">
+      <!-- Calendar -->
+      <div class="cal-panel">
+        <div class="cal-header">
+          <div class="cal-nav">
+            <button class="nav-arrow" onclick="calNav(-1)"><i class="fas fa-chevron-left"></i></button>
+            <div class="cal-period" id="calPeriod"></div>
+            <button class="nav-arrow" onclick="calNav(1)"><i class="fas fa-chevron-right"></i></button>
+          </div>
+          <div class="view-btns">
+            <button class="vbtn on" onclick="setCalView('week',this)">Week</button>
+            <button class="vbtn" onclick="setCalView('month',this)">Maand</button>
+          </div>
+        </div>
+        <div id="calGrid"></div>
+        <div class="legend">
+          <div class="leg"><i class="fas fa-circle-check" style="color:var(--green);font-size:.75rem"></i> Vrij</div>
+          <div class="leg"><i class="fas fa-lock" style="color:rgba(56,189,248,.6);font-size:.75rem"></i> Bezet</div>
+          <div class="leg"><i class="fas fa-hourglass-half" style="color:var(--orange);font-size:.75rem"></i> In afwachting</div>
+          <div class="leg"><i class="fas fa-wrench" style="color:var(--red);font-size:.75rem"></i> Service</div>
+        </div>
+      </div>
+
+      <!-- Booking panel -->
+      <div class="book-panel">
+        <div class="panel-title"><i class="fas fa-clipboard-list"></i> Uw aanvraag</div>
+        <div id="bookEmpty" class="empty-state">
+          <div class="empty-icon"><i class="fas fa-mouse-pointer"></i></div>
+          <div class="empty-t">Selecteer een groen slot</div>
+          <div class="empty-d">Klik op een vrij tijdslot in de kalender om uw reservatie te starten.</div>
+        </div>
+        <div id="bookForm" style="display:none">
+          <div class="slot-info" id="slotInfo"></div>
+
+          <!-- Persoonlijke gegevens -->
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-user"></i> Uw gegevens</div>
+            <div class="inp-row">
+              <div class="fg"><label>Voornaam</label><input class="inp" id="fVoornaam" placeholder="Jan" /></div>
+              <div class="fg"><label>Achternaam</label><input class="inp" id="fNaam" placeholder="Janssen" /></div>
+            </div>
+            <div class="inp-row">
+              <div class="fg"><label>Telefoon</label><input class="inp" id="fTel" type="tel" placeholder="+32 4xx xxx xxx" /></div>
+              <div class="fg"><label>E-mail</label><input class="inp" id="fEmail" type="email" placeholder="jan@email.be" /></div>
+            </div>
+          </div>
+
+          <!-- Voertuig -->
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-plane"></i> Voertuig / Object</div>
+            <div class="fg">
+              <label>Type</label>
+              <div class="vtype-grid" id="vtypeGrid">
+                <div class="vtype-btn on" data-type="vliegtuig"><div class="vico">✈️</div><div class="vlabel">Vliegtuig</div></div>
+                <div class="vtype-btn" data-type="helikopter"><div class="vico">🚁</div><div class="vlabel">Helikopter</div></div>
+                <div class="vtype-btn" data-type="boot"><div class="vico">⛵</div><div class="vlabel">Boot</div></div>
+                <div class="vtype-btn" data-type="fiets"><div class="vico">🚲</div><div class="vlabel">Fiets</div></div>
+                <div class="vtype-btn" data-type="helm"><div class="vico">🪖</div><div class="vlabel">Helm</div></div>
+                <div class="vtype-btn" data-type="overig"><div class="vico">⚙️</div><div class="vlabel">Overig</div></div>
+              </div>
+            </div>
+            <div class="inp-row">
+              <div class="fg"><label>Merk / Model</label><input class="inp" id="fModel" placeholder="bv. Cessna 172" /></div>
+              <div class="fg">
+                <label>Geschatte duur</label>
+                <select class="inp" id="fDuur">
+                  <option value="3">3 dagen — klein</option>
+                  <option value="5">5 dagen — middel</option>
+                  <option value="7">7 dagen — groot</option>
+                  <option value="14">14 dagen — volledig</option>
+                </select>
+              </div>
+            </div>
+            <div class="fg"><label>Omschrijving van het werk</label>
+              <textarea class="inp" id="fOmschrijving" rows="3" placeholder="Beschrijf wat u wilt laten doen..."></textarea>
+            </div>
+          </div>
+
+          <!-- Kleurwens -->
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-palette"></i> Kleurwens</div>
+            <div class="fg">
+              <label>Kies een kleur</label>
+              <div class="color-mini" id="colorMini">
+                <div class="cmini-dot on" data-c="#0ea5e9" style="background:#0ea5e9"></div>
+                <div class="cmini-dot" data-c="#ef4444" style="background:#ef4444"></div>
+                <div class="cmini-dot" data-c="#10b981" style="background:#10b981"></div>
+                <div class="cmini-dot" data-c="#f59e0b" style="background:#f59e0b"></div>
+                <div class="cmini-dot" data-c="#8b5cf6" style="background:#8b5cf6"></div>
+                <div class="cmini-dot" data-c="#ec4899" style="background:#ec4899"></div>
+                <div class="cmini-dot" data-c="#f97316" style="background:#f97316"></div>
+                <div class="cmini-dot" data-c="#1e293b" style="background:#1e293b;border:1px solid rgba(255,255,255,.15)"></div>
+                <div class="cmini-dot" data-c="#ffffff" style="background:#fff"></div>
+                <label class="cmini-custom" title="Aangepaste kleur"><i class="fas fa-plus"></i>
+                  <input type="color" id="colorCustom" style="position:absolute;opacity:0;width:0;height:0">
+                </label>
+              </div>
+              <div class="color-result" id="colorResult">
+                <div class="color-preview" id="colorPreview" style="background:#0ea5e9"></div>
+                <span class="color-label" id="colorLabel">#0EA5E9</span>
+                <span style="font-size:.78rem;color:var(--muted);margin-left:4px">— Sky Blue</span>
+              </div>
+            </div>
+            <div class="fg"><label>Extra kleuropmerking</label>
+              <input class="inp" id="fKleurNote" placeholder="bv. matte afwerking, metallic, twee-kleurig...">
+            </div>
+          </div>
+
+          <!-- Foto upload -->
+          <div class="form-section">
+            <div class="form-section-title"><i class="fas fa-camera"></i> Foto's van het object</div>
+            <div class="upload-area" id="uploadArea">
+              <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(this.files)">
+              <div class="upload-ico"><i class="fas fa-cloud-upload-alt"></i></div>
+              <div class="upload-txt">Sleep foto's hierheen of <strong>klik om te bladeren</strong></div>
+              <div class="upload-txt" style="margin-top:4px;font-size:.72rem">JPG, PNG — max 5 foto's</div>
+            </div>
+            <div class="preview-imgs" id="previewImgs"></div>
+          </div>
+
+          <button class="submit-btn" onclick="submitBooking()">
+            <i class="fas fa-paper-plane"></i> Reservatie Aanvragen
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       ADMIN VIEW
+  ════════════════════════════════ -->
+  <div class="view" id="viewAdmin">
+    <div class="page-header">
+      <div class="page-title"><i class="fas fa-shield-alt"></i> Admin Dashboard</div>
+      <div class="page-sub">Beheer boekingen, slots en de planning.</div>
+    </div>
+
+    
+
+    <!-- Stats -->
+    <div class="admin-grid" id="adminStats"></div>
+
+    <!-- Slot editor -->
+    <div class="slot-editor">
+      <div class="se-title"><i class="fas fa-calendar-edit"></i> Slotbeheer — Week 8–14 dec</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <div style="font-size:.78rem;color:var(--muted);padding:6px 0">Klik modus:</div>
+        <div class="se-leg sel" data-mode="free" onclick="setEditMode('free',this)"><div class="se-dot" style="background:var(--green)"></div><i class="fas fa-circle-check" style="font-size:.7rem"></i> Vrij</div>
+        <div class="se-leg" data-mode="blocked" onclick="setEditMode('blocked',this)"><div class="se-dot" style="background:rgba(56,189,248,.4)"></div><i class="fas fa-ban" style="font-size:.7rem"></i> Blokkeren</div>
+        <div class="se-leg" data-mode="maintenance" onclick="setEditMode('maintenance',this)"><div class="se-dot" style="background:var(--orange)"></div><i class="fas fa-wrench" style="font-size:.7rem"></i> Service</div>
+      </div>
+      <div class="se-grid" id="seGrid"></div>
+    </div>
+
+    <!-- Bookings -->
+    <div class="filter-bar">
+      <button class="filt-btn on" data-f="all" onclick="filterBookings('all',this)"><i class="fas fa-list"></i> Alle</button>
+      <button class="filt-btn" data-f="pending" onclick="filterBookings('pending',this)"><i class="fas fa-hourglass-half"></i> Wachtend</button>
+      <button class="filt-btn" data-f="confirmed" onclick="filterBookings('confirmed',this)"><i class="fas fa-circle-check"></i> Bevestigd</button>
+      <button class="filt-btn" data-f="done" onclick="filterBookings('done',this)"><i class="fas fa-flag-checkered"></i> Afgerond</button>
+      <div class="filt-sep"></div>
+      <input class="search-inp" placeholder="🔍 Zoek naam, voertuig..." oninput="searchBookings(this.value)">
+    </div>
+    <div class="bookings-list" id="bookingsList"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="toast-ico" id="toastIco"></div>
+  <div><div class="toast-t" id="toastT"></div><div class="toast-d" id="toastD"></div></div>
+</div>
+
+<!-- Detail modal -->
+<div class="modal-bg" id="detailModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modalTitle">Boeking detail</div>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+
+// ════════════════════════════════════════════════
+// EMAILJS CONFIGURATIE
+// ════════════════════════════════════════════════
+// ┌─────────────────────────────────────────────────────────────────┐
+// │  SETUP (eenmalig, gratis op emailjs.com):                       │
+// │                                                                 │
+// │  1. Maak account op https://www.emailjs.com                     │
+// │  2. Voeg een Email Service toe (bijv. Gmail) → noteer Service ID│
+// │  3. Maak 2 Email Templates aan:                                 │
+// │     Template 1 — Admin melding (EMAILJS_TEMPLATE_ADMIN):        │
+// │       Onderwerp: 🔔 Nieuwe reservatie — {{klant_naam}}          │
+// │       Body: zie onderaan dit blok                               │
+// │     Template 2 — Klant bevestiging (EMAILJS_TEMPLATE_KLANT):    │
+// │       Onderwerp: ✅ Uw aanvraag bij Sky Art Creations            │
+// │       Body: zie onderaan dit blok                               │
+// │  4. Vul hieronder jouw echte waarden in                         │
+// │                                                                 │
+// │  TEMPLATE VARIABELEN die beschikbaar zijn:                      │
+// │  {{klant_naam}}, {{klant_email}}, {{klant_tel}}                  │
+// │  {{voertuig_type}}, {{voertuig_model}}, {{kleur}}               │
+// │  {{datum}}, {{tijd}}, {{duur}}, {{omschrijving}}                │
+// │  {{admin_email}} (voor reply-to in klant template)              │
+// └─────────────────────────────────────────────────────────────────┘
+
+const EMAILJS_PUBLIC_KEY   = 'JOUW_PUBLIC_KEY';      // Account > API Keys
+const EMAILJS_SERVICE_ID   = 'JOUW_SERVICE_ID';      // Email Services > Service ID
+const EMAILJS_TEMPLATE_ADMIN = 'JOUW_ADMIN_TEMPLATE_ID';  // Template voor jou (admin)
+const EMAILJS_TEMPLATE_KLANT = 'JOUW_KLANT_TEMPLATE_ID';  // Template voor de klant
+const ADMIN_EMAIL          = 'jouw@email.be';         // Jouw e-mailadres
+
+// Init EmailJS
+(function() {
+  try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); }
+  catch(e) { console.warn('EmailJS init mislukt:', e); }
+})();
+
+const dagNamen = ['Zondag','Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag','Zaterdag'];
+const maandNamen = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+
+function formatDatum(ds) {
+  const d = new Date(ds);
+  return `${dagNamen[d.getDay()]} ${d.getDate()} ${maandNamen[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+async function stuurAdminMelding(boeking) {
+  if (EMAILJS_PUBLIC_KEY === 'JOUW_PUBLIC_KEY') return; // nog niet geconfigureerd
+  const params = {
+    to_email:       ADMIN_EMAIL,
+    klant_naam:     boeking.naam,
+    klant_email:    boeking.email,
+    klant_tel:      boeking.tel || '—',
+    voertuig_type:  boeking.type,
+    voertuig_model: boeking.model,
+    kleur:          (colorNames[boeking.kleur] || boeking.kleur) + ' (' + boeking.kleur + ')',
+    datum:          formatDatum(boeking.datum),
+    tijd:           boeking.tijd,
+    duur:           boeking.duur + ' dagen',
+    omschrijving:   boeking.omschrijving || '—',
+    admin_email:    ADMIN_EMAIL,
+  };
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ADMIN, params);
+    console.log('Admin melding verzonden ✓');
+  } catch(e) {
+    console.error('Admin mail mislukt:', e);
+  }
+}
+
+async function stuurKlantBevestiging(boeking) {
+  if (EMAILJS_PUBLIC_KEY === 'JOUW_PUBLIC_KEY') return;
+  const params = {
+    to_email:       boeking.email,
+    klant_naam:     boeking.naam,
+    klant_email:    boeking.email,
+    klant_tel:      boeking.tel || '—',
+    voertuig_type:  boeking.type,
+    voertuig_model: boeking.model,
+    kleur:          (colorNames[boeking.kleur] || boeking.kleur) + ' (' + boeking.kleur + ')',
+    datum:          formatDatum(boeking.datum),
+    tijd:           boeking.tijd,
+    duur:           boeking.duur + ' dagen',
+    omschrijving:   boeking.omschrijving || '—',
+    admin_email:    ADMIN_EMAIL,
+  };
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_KLANT, params);
+    console.log('Klant bevestiging verzonden ✓');
+  } catch(e) {
+    console.error('Klant mail mislukt:', e);
+  }
+}
+
+async function stuurStatusUpdate(boeking, nieuweStatus) {
+  if (EMAILJS_PUBLIC_KEY === 'JOUW_PUBLIC_KEY') return;
+  // Stuur de klant een mail bij bevestiging of weigering
+  const statusTekst = nieuweStatus === 'confirmed'
+    ? '✅ Uw reservatie is bevestigd! Wij kijken ernaar uit om met uw project te starten.'
+    : '❌ Uw reservatie kon helaas niet worden bevestigd. Neem contact op voor meer info.';
+  const params = {
+    to_email:       boeking.email,
+    klant_naam:     boeking.naam,
+    voertuig_model: boeking.model,
+    datum:          formatDatum(boeking.datum),
+    tijd:           boeking.tijd,
+    status_bericht: statusTekst,
+    admin_email:    ADMIN_EMAIL,
+  };
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_KLANT, params);
+    console.log('Status update mail verzonden ✓');
+  } catch(e) {
+    console.error('Status mail mislukt:', e);
+  }
+}
+
+// ════════════════════════════════════════════════
+// DATA — localStorage opslag
+// ════════════════════════════════════════════════
+const today = new Date();
+let calView = 'week';
+let calOffset = 0;
+let selectedSlot = null;
+let selectedColor = '#0ea5e9';
+let selectedVtype = 'vliegtuig';
+let editMode = 'free';
+let uploadedFiles = [];
+
+// Slot statuses: key = "YYYY-MM-DD_HH:00"
+const slotStatus = {};
+const TIMES = ['08:00','10:00','12:00','14:00','16:00','18:00'];
+const DAYS_LABEL = ['Ma','Di','Wo','Do','Vr','Za','Zo'];
+
+// ── Opslaan & laden via localStorage ──
+function saveToStorage() {
+  try {
+    localStorage.setItem('skyart_slots', JSON.stringify(slotStatus));
+    localStorage.setItem('skyart_bookings', JSON.stringify(bookings));
+  } catch(e) { console.warn('Opslaan mislukt:', e); }
+}
+
+function loadFromStorage() {
+  try {
+    const savedSlots = localStorage.getItem('skyart_slots');
+    if (savedSlots) Object.assign(slotStatus, JSON.parse(savedSlots));
+    const savedBookings = localStorage.getItem('skyart_bookings');
+    if (savedBookings) bookings = JSON.parse(savedBookings);
+  } catch(e) { console.warn('Laden mislukt:', e); }
+}
+
+// Lege lijst — gevuld vanuit localStorage
+let bookings = [];
+
+const colorNames = {
+  '#0ea5e9':'Sky Blue','#ef4444':'Rood','#10b981':'Groen','#f59e0b':'Amber',
+  '#8b5cf6':'Paars','#ec4899':'Roze','#f97316':'Oranje','#1e293b':'Navy','#ffffff':'Wit'
+};
+const vtypeIcons = {vliegtuig:'✈️',helikopter:'🚁',boot:'⛵',fiets:'🚲',helm:'🪖',overig:'⚙️'};
+
+// ════════════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════════════
+function getMonday(d) {
+  const dt = new Date(d);
+  const day = dt.getDay();
+  const diff = dt.getDate() - day + (day === 0 ? -6 : 1);
+  dt.setDate(diff); return dt;
+}
+function fmtDate(d) {
+  return d.toISOString().split('T')[0];
+}
+function addDays(d, n) {
+  const r = new Date(d); r.setDate(r.getDate() + n); return r;
+}
+function slotKey(dateStr, time) { return dateStr + '_' + time; }
+function getSlotStatus(dateStr, time) { return slotStatus[slotKey(dateStr,time)] || 'free'; }
+function toast(ico, title, desc, type='green') {
+  const t = document.getElementById('toast');
+  document.getElementById('toastIco').textContent = ico;
+  document.getElementById('toastT').textContent = title;
+  document.getElementById('toastD').textContent = desc;
+  t.style.borderColor = type==='green'?'rgba(16,185,129,.4)':'rgba(249,115,22,.4)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// ════════════════════════════════════════════════
+// MODE SWITCH + ADMIN BEVEILIGING
+// ════════════════════════════════════════════════
+const ADMIN_CODE = '1707'; // ← Verander dit naar jouw gewenste code
+let adminUnlocked = false;
+
+function setMode(mode) {
+  if (mode === 'admin') {
+    if (!adminUnlocked) {
+      document.getElementById('adminLockModal').classList.add('open');
+      document.getElementById('adminCodeInput').value = '';
+      document.getElementById('adminCodeError').style.display = 'none';
+      setTimeout(() => document.getElementById('adminCodeInput').focus(), 100);
+      return;
+    }
+  }
+  applyMode(mode);
+}
+
+function applyMode(mode) {
+  document.getElementById('viewKlant').classList.toggle('active', mode==='klant');
+  document.getElementById('viewAdmin').classList.toggle('active', mode==='admin');
+  document.getElementById('btnKlant').classList.toggle('active', mode==='klant');
+  document.getElementById('btnAdmin').classList.toggle('active', mode==='admin');
+  if (mode==='admin') { renderAdminStats(); renderBookings(); renderSlotEditor(); }
+}
+
+function submitAdminCode() {
+  const code = document.getElementById('adminCodeInput').value.trim();
+  if (code === ADMIN_CODE) {
+    adminUnlocked = true;
+    document.getElementById('adminLockModal').classList.remove('open');
+    applyMode('admin');
+  } else {
+    document.getElementById('adminCodeError').style.display = 'block';
+    document.getElementById('adminCodeInput').value = '';
+    document.getElementById('adminCodeInput').focus();
+    // Shake animation
+    const box = document.getElementById('adminCodeBox');
+    box.style.animation = 'none';
+    setTimeout(() => box.style.animation = 'shake .4s ease', 10);
+  }
+}
+
+function closeAdminLock() {
+  document.getElementById('adminLockModal').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('adminLockModal').classList.contains('open') && e.key === 'Enter') {
+    submitAdminCode();
+  }
+  if (document.getElementById('adminLockModal').classList.contains('open') && e.key === 'Escape') {
+    closeAdminLock();
+  }
+});
+
+// ════════════════════════════════════════════════
+// CALENDAR
+// ════════════════════════════════════════════════
+function setCalView(v, btn) {
+  calView = v;
+  document.querySelectorAll('.vbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderCal();
+}
+
+function calNav(dir) {
+  if (dir < 0 && calOffset <= 0) { toast('⛔','Verleden','Navigeren naar het verleden is niet mogelijk.','orange'); return; }
+  calOffset += dir; renderCal();
+}
+
+function renderCal() {
+  if (calView === 'week') renderWeek();
+  else renderMonth();
+}
+
+function renderWeek() {
+  const monday = addDays(getMonday(today), calOffset * 7);
+  const days = Array.from({length:7}, (_,i) => addDays(monday, i));
+  const dateStrings = days.map(fmtDate);
+
+  const monthNames = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+  const m1 = days[0], m2 = days[6];
+  let period = m1.getDate()+' '+monthNames[m1.getMonth()];
+  if (m1.getMonth() !== m2.getMonth()) period += ' – '+m2.getDate()+' '+monthNames[m2.getMonth()];
+  else period += ' – '+m2.getDate()+' '+monthNames[m2.getMonth()];
+  period += ' '+m1.getFullYear();
+  document.getElementById('calPeriod').textContent = period;
+
+  let html = '<div class="week-grid">';
+  // headers
+  html += '<div class="wg-head">Tijd</div>';
+  days.forEach((d,i) => {
+    const isToday = fmtDate(d) === fmtDate(today);
+    html += `<div class="wg-head" style="${isToday?'background:rgba(14,165,233,.15);color:#fff;':''}">${DAYS_LABEL[i]}<br>${d.getDate()}/${d.getMonth()+1}</div>`;
+  });
+  // rows
+  TIMES.forEach(time => {
+    html += `<div class="wg-time">${time}</div>`;
+    dateStrings.forEach(ds => {
+      const st = getSlotStatus(ds, time);
+      const key = slotKey(ds, time);
+      const isSel = selectedSlot === key;
+      const slotDateTime = new Date(ds + 'T' + time);
+      const isPast = slotDateTime < today;
+      const effectiveSt = isPast ? 'past' : st;
+      const cls = isSel ? 'selected' : effectiveSt;
+      const clickable = !isPast && st === 'free';
+      let slotIcon = '';
+      if (isSel) slotIcon = '<i class="fas fa-star" style="font-size:.7rem"></i>';
+      else if (isPast) slotIcon = '<i class="fas fa-ban" style="font-size:.65rem;opacity:.4"></i>';
+      else if (st==='free') slotIcon = '<i class="fas fa-circle-check" style="font-size:.7rem"></i>';
+      else if (st==='booked') slotIcon = '<i class="fas fa-lock" style="font-size:.65rem"></i>';
+      else if (st==='pending') slotIcon = '<i class="fas fa-hourglass-half" style="font-size:.65rem"></i>';
+      else if (st==='maintenance') slotIcon = '<i class="fas fa-wrench" style="font-size:.65rem"></i>';
+      else if (st==='blocked') slotIcon = '<i class="fas fa-xmark" style="font-size:.65rem"></i>';
+      html += `<div class="wg-slot ${cls}" ${clickable?`onclick="selectSlot('${ds}','${time}')"`:''}>${slotIcon}</div>`;
+    });
+  });
+  html += '</div>';
+  document.getElementById('calGrid').innerHTML = html;
+}
+
+function renderMonth() {
+  const base = new Date(today.getFullYear(), today.getMonth() + calOffset, 1);
+  const year = base.getFullYear(), month = base.getMonth();
+  const monthNames = ['Januari','Februari','Maart','April','Mei','Juni','Juli','Augustus','September','Oktober','November','December'];
+  document.getElementById('calPeriod').textContent = monthNames[month] + ' ' + year;
+
+  const firstDay = new Date(year, month, 1);
+  let startDay = firstDay.getDay() - 1;
+  if (startDay < 0) startDay = 6;
+
+  let html = '<div class="month-grid">';
+  DAYS_LABEL.forEach(d => { html += `<div class="month-head">${d}</div>`; });
+
+  for (let i = 0; i < startDay; i++) {
+    const d = addDays(firstDay, i - startDay);
+    html += `<div class="month-day other-month"><div class="day-num">${d.getDate()}</div></div>`;
+  }
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dt = new Date(year, month, d);
+    const ds = fmtDate(dt);
+    const isToday = ds === fmtDate(today);
+    const freeSlots = TIMES.filter(t => getSlotStatus(ds,t) === 'free' && new Date(ds + 'T' + t) >= today).length;
+    const hasFree = freeSlots > 0;
+    html += `<div class="month-day${isToday?' today':''}${hasFree?' has-free':''}" onclick="clickMonthDay('${ds}')">
+      <div class="day-num" style="${isToday?'color:var(--sky)':''}">${d}</div>
+      <div class="day-dots">
+        ${TIMES.map(t => {
+          const s=getSlotStatus(ds,t);
+          const slotDT = new Date(ds + 'T' + t);
+          const past = slotDT < today;
+          const c=past?'rgba(255,255,255,.08)':s==='free'?'var(--green)':s==='booked'?'rgba(56,189,248,.5)':s==='pending'?'var(--orange)':s==='maintenance'?'var(--red)':'rgba(255,255,255,.08)';
+          return `<div class="day-dot" style="background:${c}"></div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }
+
+  const lastDay = new Date(year, month, daysInMonth);
+  const endPad = (7 - ((startDay + daysInMonth) % 7)) % 7;
+  for (let i = 1; i <= endPad; i++) {
+    const d = addDays(lastDay, i);
+    html += `<div class="month-day other-month"><div class="day-num">${d.getDate()}</div></div>`;
+  }
+  html += '</div>';
+  document.getElementById('calGrid').innerHTML = html;
+}
+
+function clickMonthDay(ds) {
+  // Switch to week view centered on that date
+  const clickedDate = new Date(ds);
+  const mondayOfClicked = getMonday(clickedDate);
+  const mondayOfToday = getMonday(today);
+  const diffMs = mondayOfClicked - mondayOfToday;
+  calOffset = Math.round(diffMs / (7 * 24 * 3600 * 1000));
+  calView = 'week';
+  document.querySelectorAll('.vbtn').forEach((b,i) => b.classList.toggle('on', i===0));
+  renderCal();
+}
+
+function selectSlot(ds, time) {
+  const slotDT = new Date(ds + 'T' + time);
+  if (slotDT < today) { toast('⛔','Verleden slot','Dit tijdslot ligt in het verleden.','orange'); return; }
+  selectedSlot = slotKey(ds, time);
+  renderCal();
+  // Show form
+  document.getElementById('bookEmpty').style.display = 'none';
+  document.getElementById('bookForm').style.display = 'block';
+  const d = new Date(ds);
+  const dayNames = ['Zondag','Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag','Zaterdag'];
+  const mNames = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+  document.getElementById('slotInfo').innerHTML = `
+    <div class="slot-row"><i class="fas fa-calendar-day"></i> <strong>${dayNames[d.getDay()]} ${d.getDate()} ${mNames[d.getMonth()]} ${d.getFullYear()}</strong></div>
+    <div class="slot-row"><i class="fas fa-clock"></i> Tijdslot: <strong>${time} — ${parseInt(time)+2}:00</strong></div>
+  `;
+}
+
+// ════════════════════════════════════════════════
+// VEHICLE TYPE
+// ════════════════════════════════════════════════
+document.getElementById('vtypeGrid').addEventListener('click', e => {
+  const btn = e.target.closest('.vtype-btn');
+  if (!btn) return;
+  document.querySelectorAll('.vtype-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  selectedVtype = btn.dataset.type;
+});
+
+// ════════════════════════════════════════════════
+// COLOR PICKER
+// ════════════════════════════════════════════════
+document.getElementById('colorMini').addEventListener('click', e => {
+  const dot = e.target.closest('.cmini-dot');
+  if (!dot) return;
+  document.querySelectorAll('.cmini-dot').forEach(d => d.classList.remove('on'));
+  dot.classList.add('on');
+  selectedColor = dot.dataset.c;
+  updateColorResult();
+});
+
+document.querySelector('.cmini-custom').addEventListener('click', () => {
+  document.getElementById('colorCustom').click();
+});
+document.getElementById('colorCustom').addEventListener('input', e => {
+  selectedColor = e.target.value;
+  document.querySelectorAll('.cmini-dot').forEach(d => d.classList.remove('on'));
+  updateColorResult();
+});
+
+function updateColorResult() {
+  document.getElementById('colorPreview').style.background = selectedColor;
+  document.getElementById('colorLabel').textContent = selectedColor.toUpperCase();
+  const name = colorNames[selectedColor.toLowerCase()] || 'Aangepaste kleur';
+  document.querySelector('#colorResult span').textContent = '— ' + name;
+}
+
+// ════════════════════════════════════════════════
+// FILE UPLOAD
+// ════════════════════════════════════════════════
+const uploadArea = document.getElementById('uploadArea');
+uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag'));
+uploadArea.addEventListener('drop', e => {
+  e.preventDefault(); uploadArea.classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+});
+
+function handleFiles(files) {
+  const arr = Array.from(files).slice(0, 5 - uploadedFiles.length);
+  arr.forEach(f => {
+    if (!f.type.startsWith('image/')) return;
+    uploadedFiles.push(f);
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const wrap = document.createElement('div');
+      wrap.className = 'prev-img-wrap';
+      wrap.innerHTML = `<img src="${ev.target.result}" class="prev-img"><button class="prev-remove" onclick="removeImg(this)"><i class="fas fa-times"></i></button>`;
+      document.getElementById('previewImgs').appendChild(wrap);
+    };
+    reader.readAsDataURL(f);
+  });
+}
+function removeImg(btn) {
+  const idx = Array.from(document.getElementById('previewImgs').children).indexOf(btn.parentElement);
+  uploadedFiles.splice(idx, 1);
+  btn.parentElement.remove();
+}
+
+// ════════════════════════════════════════════════
+// SUBMIT
+// ════════════════════════════════════════════════
+function submitBooking() {
+  const v = n => document.getElementById(n).value.trim();
+  if (!selectedSlot) { toast('⚠️','Geen slot','Kies eerst een tijdslot.','orange'); return; }
+  if (!v('fVoornaam')||!v('fNaam')) { toast('⚠️','Gegevens ontbreken','Vul uw voor- en achternaam in.','orange'); return; }
+  if (!v('fEmail')) { toast('⚠️','E-mail ontbreekt','Vul een geldig e-mailadres in.','orange'); return; }
+  if (!v('fModel')) { toast('⚠️','Model ontbreekt','Vul het merk / model in.','orange'); return; }
+
+  const [ds, time] = selectedSlot.split('_');
+  slotStatus[selectedSlot] = 'pending';
+
+  const newB = {
+    id: bookings.length + 1,
+    naam: v('fVoornaam') + ' ' + v('fNaam'),
+    email: v('fEmail'), tel: v('fTel'),
+    type: selectedVtype, model: v('fModel'),
+    duur: document.getElementById('fDuur').value,
+    omschrijving: v('fOmschrijving'),
+    kleur: selectedColor,
+    kleurNote: v('fKleurNote'),
+    datum: ds, tijd: time,
+    status: 'pending', foto: []
+  };
+  bookings.push(newB);
+  saveToStorage();
+
+  // Stuur e-mails (async, blokkeer UI niet)
+  stuurAdminMelding(newB);
+  stuurKlantBevestiging(newB);
+
+  // Reset
+  selectedSlot = null;
+  document.getElementById('bookEmpty').style.display = 'block';
+  document.getElementById('bookForm').style.display = 'none';
+  ['fVoornaam','fNaam','fEmail','fTel','fModel','fOmschrijving','fKleurNote'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('previewImgs').innerHTML = '';
+  uploadedFiles = [];
+  renderCal();
+
+  toast('✅','Aanvraag verzonden!',`We nemen binnen 24u contact op via ${newB.email}`);
+}
+
+// ════════════════════════════════════════════════
+// ADMIN — STATS
+// ════════════════════════════════════════════════
+function renderAdminStats() {
+  const pending = bookings.filter(b=>b.status==='pending').length;
+  const confirmed = bookings.filter(b=>b.status==='confirmed').length;
+  const done = bookings.filter(b=>b.status==='done').length;
+  const nowTs = new Date().getTime();
+  const freeCount = Object.entries(slotStatus).filter(([k,v]) => {
+    if (v !== 'free') return false;
+    const [ds, t] = k.split('_');
+    return new Date(ds + 'T' + t).getTime() >= nowTs;
+  }).length;
+  const stats = [
+    {ico:'<i class="fas fa-hourglass-half"></i>',n:pending,l:'Wachtende aanvragen',bg:'rgba(249,115,22,.12)',c:'var(--orange)'},
+    {ico:'<i class="fas fa-circle-check"></i>',n:confirmed,l:'Bevestigde boekingen',bg:'rgba(16,185,129,.1)',c:'var(--green)'},
+    {ico:'<i class="fas fa-flag-checkered"></i>',n:done,l:'Afgeronde projecten',bg:'rgba(148,163,184,.08)',c:'var(--muted)'},
+    {ico:'<i class="fas fa-calendar-check"></i>',n:freeCount,l:'Vrije slots (toekomst)',bg:'rgba(56,189,248,.08)',c:'var(--sky)'},
+  ];
+  document.getElementById('adminStats').innerHTML = stats.map(s=>`
+    <div class="admin-stat">
+      <div class="astat-ico" style="background:${s.bg};color:${s.c};font-size:1.3rem">${s.ico}</div>
+      <div><div class="astat-n" style="color:${s.c}">${s.n}</div><div class="astat-l">${s.l}</div></div>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════
+// ADMIN — SLOT EDITOR
+// ════════════════════════════════════════════════
+function setEditMode(m, btn) {
+  editMode = m;
+  document.querySelectorAll('.se-leg').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function renderSlotEditor() {
+  const monday = getMonday(today);
+  const days = Array.from({length:7}, (_,i) => addDays(monday,i));
+  const mNames=['jan','feb','mrt','apr','mei','jun'];
+  let html = '';
+  days.forEach(d => {
+    const ds = fmtDate(d);
+    TIMES.forEach(t => {
+      const st = getSlotStatus(ds,t);
+      html += `<div class="se-slot ${st}" onclick="toggleAdminSlot('${ds}','${t}',this)">
+        ${DAYS_LABEL[d.getDay()===0?6:d.getDay()-1]} ${d.getDate()}<br>${t}
+      </div>`;
+    });
+  });
+  document.getElementById('seGrid').innerHTML = html;
+}
+
+function toggleAdminSlot(ds, time, el) {
+  const key = slotKey(ds,time);
+  const cur = slotStatus[key]||'free';
+  if (cur === 'booked' || cur === 'pending') { toast('⚠️','Niet beschikbaar','Dit slot heeft al een boeking.','orange'); return; }
+  slotStatus[key] = editMode;
+  el.className = 'se-slot ' + editMode;
+  saveToStorage();
+  renderAdminStats();
+}
+
+// ════════════════════════════════════════════════
+// ADMIN — BOOKINGS LIST
+// ════════════════════════════════════════════════
+let currentFilter = 'all', currentSearch = '';
+
+function filterBookings(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filt-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderBookings();
+}
+function searchBookings(q) { currentSearch = q.toLowerCase(); renderBookings(); }
+
+function renderBookings() {
+  let list = [...bookings].reverse();
+  if (currentFilter !== 'all') list = list.filter(b=>b.status===currentFilter);
+  if (currentSearch) list = list.filter(b=>
+    b.naam.toLowerCase().includes(currentSearch)||
+    b.model.toLowerCase().includes(currentSearch)||
+    b.type.toLowerCase().includes(currentSearch)
+  );
+
+  if (!list.length) {
+    document.getElementById('bookingsList').innerHTML = `
+      <div style="text-align:center;padding:50px;color:var(--muted)">
+        <div style="font-size:2.5rem;margin-bottom:12px">📭</div>
+        <div style="font-family:var(--fd);font-size:1.1rem;color:#fff">Geen boekingen gevonden</div>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('bookingsList').innerHTML = list.map(b => {
+    const badgeCls = b.status==='pending'?'badge-pending':b.status==='confirmed'?'badge-confirmed':'badge-done';
+    const badgeLabel = b.status==='pending'?'<i class="fas fa-hourglass-half"></i> Wachtend':b.status==='confirmed'?'<i class="fas fa-circle-check"></i> Bevestigd':'<i class="fas fa-flag-checkered"></i> Afgerond';
+    const d = new Date(b.datum);
+    const mns=['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+    return `
+    <div class="booking-card" id="bc${b.id}">
+      <div class="bc-top">
+        <div>
+          <div class="bc-name">${vtypeIcons[b.type]||'⚙️'} ${b.naam}</div>
+          <div class="bc-vehicle">${b.model} — ${b.type}</div>
+        </div>
+        <div class="bc-badge ${badgeCls}">${badgeLabel}</div>
+      </div>
+      <div class="bc-details">
+        <div class="bc-det">Datum<strong>${d.getDate()} ${mns[d.getMonth()]} ${d.getFullYear()} ${b.tijd}</strong></div>
+        <div class="bc-det">Duur<strong>${b.duur} dagen</strong></div>
+        <div class="bc-det">Kleur<strong><span class="bc-color" style="background:${b.kleur}"></span>${(colorNames[b.kleur]||b.kleur)}</strong></div>
+        <div class="bc-det">Contact<strong>${b.tel||b.email}</strong></div>
+      </div>
+      ${b.omschrijving?`<div style="font-size:.82rem;color:var(--muted);margin-bottom:14px;padding:10px 14px;background:rgba(255,255,255,.03);border-radius:8px;border-left:2px solid var(--border)">"${b.omschrijving}"</div>`:''}
+      <div class="bc-actions">
+        ${b.status==='pending'?`
+          <button class="act-btn act-confirm" onclick="changeStatus(${b.id},'confirmed')"><i class="fas fa-check"></i> Bevestigen</button>
+          <button class="act-btn act-reject" onclick="changeStatus(${b.id},'rejected')"><i class="fas fa-times"></i> Weigeren</button>`:''}
+        ${b.status==='confirmed'?`<button class="act-btn act-done" onclick="changeStatus(${b.id},'done')"><i class="fas fa-flag-checkered"></i> Afgerond</button>`:''}
+        <button class="act-btn act-edit" onclick="showDetail(${b.id})"><i class="fas fa-eye"></i> Details</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function changeStatus(id, newStatus) {
+  const b = bookings.find(x=>x.id===id);
+  if (!b) return;
+  if (newStatus === 'rejected') {
+    slotStatus[slotKey(b.datum,b.tijd)] = 'free';
+    bookings = bookings.filter(x=>x.id!==id);
+    stuurStatusUpdate(b, 'rejected');
+    toast('🗑️','Boeking geweigerd',`${b.naam} is op de hoogte gebracht.`,'orange');
+  } else {
+    b.status = newStatus;
+    if (newStatus==='confirmed') {
+      slotStatus[slotKey(b.datum,b.tijd)]='booked';
+      stuurStatusUpdate(b, 'confirmed');
+      toast('✅','Boeking bevestigd!',`${b.naam} — ${b.model}`);
+    } else {
+      toast('🏁','Project afgerond!',`${b.naam} — ${b.model}`);
+    }
+  }
+  saveToStorage();
+  renderBookings();
+  renderAdminStats();
+  renderSlotEditor();
+}
+
+function showDetail(id) {
+  const b = bookings.find(x=>x.id===id);
+  if (!b) return;
+  const d = new Date(b.datum);
+  const mns=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+  document.getElementById('modalTitle').textContent = `${vtypeIcons[b.type]} ${b.naam}`;
+  document.getElementById('modalBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+      ${[
+        ['E-mail',b.email],['Telefoon',b.tel||'—'],
+        ['Type',b.type],['Model',b.model],
+        ['Datum',`${d.getDate()} ${mns[d.getMonth()]} ${d.getFullYear()}`],['Tijd',b.tijd],
+        ['Duur',b.duur+' dagen'],['Status',b.status],
+      ].map(([l,v])=>`<div><div style="font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">${l}</div><div style="color:#fff;font-size:.92rem">${v}</div></div>`).join('')}
+    </div>
+    <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:14px;margin-bottom:16px">
+      <div style="font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Kleurwens</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:32px;height:32px;border-radius:8px;background:${b.kleur};border:1px solid rgba(255,255,255,.2)"></div>
+        <div><div style="color:#fff;font-size:.9rem">${colorNames[b.kleur]||b.kleur}</div><div style="color:var(--muted);font-size:.8rem">${b.kleurNote||'Geen opmerking'}</div></div>
+      </div>
+    </div>
+    ${b.omschrijving?`<div style="background:rgba(255,255,255,.04);border-radius:10px;padding:14px"><div style="font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Omschrijving</div><div style="color:var(--muted);font-size:.88rem;line-height:1.65">${b.omschrijving}</div></div>`:''}
+  `;
+  document.getElementById('detailModal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('detailModal').classList.remove('open'); }
+document.getElementById('detailModal').addEventListener('click', e => { if(e.target.id==='detailModal') closeModal(); });
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+loadFromStorage();
+renderCal();
+
+// Verberg email setup banner als EmailJS geconfigureerd is
+(function() {
+  const banner = document.getElementById('emailSetupBanner');
+  if (banner && EMAILJS_PUBLIC_KEY !== 'JOUW_PUBLIC_KEY') {
+    banner.style.display = 'none';
+  }
+})();
+</script>
+
+<!-- Admin Lock Modal -->
+<div class="lock-modal-bg" id="adminLockModal">
+  <div class="lock-modal" id="adminCodeBox">
+    <div class="lock-icon">🔐</div>
+    <div class="lock-title">Admin Toegang</div>
+    <div class="lock-sub">Voer de toegangscode in om het admin dashboard te openen.</div>
+    <input class="lock-inp" type="password" id="adminCodeInput" maxlength="20" placeholder="••••" autocomplete="off">
+    <div class="lock-error" id="adminCodeError">❌ Onjuiste code. Probeer opnieuw.</div>
+    <button class="lock-btn" onclick="submitAdminCode()"><i class="fas fa-unlock"></i> Toegang</button>
+    <button class="lock-cancel" onclick="closeAdminLock()">Annuleren</button>
+  </div>
+</div>
+</body>
+</html>

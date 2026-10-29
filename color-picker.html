@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kleurenkiezer — Sky Art Creations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --c-black: #09131e;
+      --c-deep: #0c1927;
+      --c-panel: #122537;
+      --c-border: rgba(190, 211, 224, 0.14);
+      --c-sky: #a8c6d4;
+      --c-sky-dim: #7599aa;
+      --c-muted: #a7b5bf;
+      --c-white: #ffffff;
+      --font-display: 'DM Sans', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--c-black);
+      color: var(--c-white);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* Top bar */
+    .topbar {
+      background: rgba(4,6,13,0.95);
+      border-bottom: 1px solid var(--c-border);
+      padding: 0 40px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--c-white);
+    }
+    .logo span { color: var(--c-sky); }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56,189,248,0.08);
+      border: 1px solid var(--c-border);
+      color: var(--c-sky);
+      padding: 10px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .back-btn:hover {
+      background: var(--c-sky-dim);
+      color: var(--c-white);
+      border-color: var(--c-sky-dim);
+      transform: translateX(-4px);
+    }
+
+    /* Page header */
+    .page-header {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background: linear-gradient(180deg, var(--c-deep) 0%, var(--c-black) 100%);
+    }
+
+    .page-header h1 {
+      max-width: 900px;
+      margin: 0 auto 16px;
+      font-family: var(--font-body);
+      font-size: clamp(2.35rem, 5.8vw, 4.5rem);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -.055em;
+    }
+
+    .page-header h1 span { color: var(--c-sky); display: inline-block; margin-left: .12em; }
+
+    .page-header p {
+      color: var(--c-muted);
+      max-width: 620px;
+      margin: 0 auto;
+      font-size: 1rem;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .page-header { padding: 76px 20px 54px; position: relative; }
+    .page-header::before {
+      content: 'INTERACTIEVE ONTWERPSTUDIO';
+      display: block;
+      margin-bottom: 18px;
+      color: #d4a66b;
+      font: 600 .72rem var(--font-body);
+      letter-spacing: .19em;
+    }
+
+    /* Main layout */
+    .picker-layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 30px 80px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 30px;
+    }
+
+    /* Controls panel */
+    .controls-panel {
+      background: var(--c-panel);
+      border: 1px solid var(--c-border);
+      border-radius: 6px;
+      padding: 30px;
+      height: fit-content;
+      position: sticky;
+      top: 90px;
+    }
+
+    .controls-panel h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--c-white);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .control-group { margin-bottom: 24px; }
+
+    .control-group label {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      margin-bottom: 10px;
+    }
+
+    #colorPicker {
+      width: 100%;
+      height: 56px;
+      border: 1px solid var(--c-border);
+      border-radius: 12px;
+      cursor: pointer;
+      background: transparent;
+      padding: 4px;
+      transition: border-color 0.3s;
+    }
+
+    #colorPicker:hover { border-color: var(--c-sky-dim); }
+    #colorPicker { border-radius:8px; background:rgba(255,255,255,.035); }
+    .controls-panel h2 { letter-spacing:-.025em; font-size:1.28rem; }
+    .control-group label { letter-spacing:.075em; }
+    .topbar { border-bottom-color:rgba(190,211,224,.12); }
+    .page-header { background:radial-gradient(ellipse at 50% 0%,rgba(78,112,133,.14),transparent 64%),linear-gradient(180deg,#0c1927,#09131e); }
+    .page-header h1 { letter-spacing:-.035em; }
+    .page-header h1 span { color:#d4a66b; }
+
+    .presets-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .preset {
+      height: 50px;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preset::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background 0.2s;
+    }
+
+    .preset:hover {
+      transform: scale(1.08) translateY(-2px);
+      border-color: var(--c-sky);
+      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+    }
+
+    .preset.active {
+      border-color: var(--c-sky);
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.3);
+    }
+
+    /* Color info */
+    .color-info {
+      background: rgba(56,189,248,0.04);
+      border: 1px solid var(--c-border);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .color-swatch {
+      height: 56px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      transition: background 0.3s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .color-code {
+      font-family: 'Courier New', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--c-sky);
+      letter-spacing: 0.1em;
+    }
+
+    /* Aircraft preview */
+    .aircraft-panel {
+      background: var(--c-panel);
+      border: 1px solid var(--c-border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 560px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated background */
+    .aircraft-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 50%, rgba(56,189,248,0.06), transparent 60%),
+        radial-gradient(circle at 70% 50%, rgba(14,165,233,0.04), transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Grid lines effect */
+    .aircraft-panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .aircraft-container { position:relative; width:min(96%,1000px); z-index:1; padding:0; }
+    .aircraft-photo { display:block; width:100%; height:auto; filter:drop-shadow(0 24px 24px rgba(0,0,0,.34)); }
+    .paint-overlay,.stripe-overlay { position:absolute; inset:0; pointer-events:none; background:var(--plane-color,#0ea5e9); -webkit-mask-image:url("Assets/Foto's/vliegtuig-preview.png"); mask-image:url("Assets/Foto's/vliegtuig-preview.png"); mask-repeat:no-repeat; mask-position:center; mask-size:100% 100%; mix-blend-mode:multiply; opacity:.76; transition:background .25s ease,opacity .25s ease,filter .25s ease; }
+    .stripe-overlay { background:var(--plane-accent,#d4a66b); clip-path:polygon(0 59%,100% 55%,100% 59%,0 63%); opacity:.94; }
+    .paint-overlay.metallic { opacity:.9; filter:contrast(1.18) saturate(1.12); }
+    .blueprint-note { position:absolute; right:22px; bottom:18px; color:#8297a7; font: .68rem var(--font-body); letter-spacing:.12em; text-transform:uppercase; }
+    .image-credit { position:absolute; left:22px; bottom:18px; z-index:4; color:#8297a7; font: .68rem var(--font-body); }
+    .image-credit a { color:#aebec8; text-decoration:underline; text-underline-offset:3px; }
+
+    .aircraft-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 20px 50px rgba(0,0,0,0.6));
+      transition: filter 0.4s;
+    }
+
+    .color-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--c-sky-dim);
+      -webkit-mask-image: url("Assets/Foto's/vliegtuig_animatie_wit.png");
+      mask-image: url("Assets/Foto's/vliegtuig_animatie_wit.png");
+      mask-repeat: no-repeat;
+      mask-size: contain;
+      mask-position: center;
+      pointer-events: none;
+      z-index: 2;
+      transition: background 0.3s, opacity .3s;
+      mix-blend-mode: multiply;
+      opacity: .72;
+    }
+
+    .design-option { display:flex; align-items:center; gap:12px; padding:13px 15px; margin-top:10px; border:1px solid rgba(183,211,226,.14); border-radius:10px; color:#dbe5eb; font-size:.9rem; background:rgba(255,255,255,.025); transition:border-color .2s,background .2s; }
+    .design-option:hover { border-color:rgba(212,166,107,.45); background:rgba(255,255,255,.045); }
+    .design-option input { accent-color:#d4a66b; width:17px; height:17px; }
+    .preview-label { position:absolute; top:20px; left:22px; z-index:5; color:#b8c6cf; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; }
+    .design-summary { margin-top:14px; color:var(--c-muted); font-size:.82rem; line-height:1.65; }
+    .share-design { width:100%; margin-top:16px; padding:15px 18px; border:1px solid rgba(246,218,179,.5); border-radius:9px; background:linear-gradient(135deg,#e4bd8b,#c9955d); color:#151a20; font:600 .92rem var(--font-body); cursor:pointer; box-shadow:0 8px 24px rgba(201,149,93,.17); transition:background .2s,transform .2s,box-shadow .2s; }
+    .share-design:hover { background:linear-gradient(135deg,#f0d0a5,#d5a46d); transform:translateY(-2px); box-shadow:0 12px 28px rgba(201,149,93,.26); }
+    .share-design:focus-visible,.back-btn:focus-visible,.preset:focus-visible { outline:2px solid #e8c18f; outline-offset:3px; }
+    .preset { border-radius:8px; box-shadow:inset 0 1px rgba(255,255,255,.2); }
+    .preset.active { border-color:#fff; box-shadow:0 0 0 2px #122537,0 0 0 4px #d4a66b; }
+    .color-info { border-radius:10px; background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.015)); }
+    .controls-panel { border-color:rgba(183,211,226,.16); background:linear-gradient(155deg,#142a3c,#0c1927); box-shadow:0 22px 60px rgba(0,0,0,.2); }
+    .aircraft-panel { background:radial-gradient(ellipse at 50% 55%,#263d50 0%,#0c1927 72%); border-color:rgba(201,220,232,.16); }
+    .back-btn { border-radius:8px; background:rgba(255,255,255,.04); color:#e2bd8e; border-color:rgba(212,166,107,.25); font-family:var(--font-body); font-weight:500; }
+    .back-btn:hover { background:rgba(212,166,107,.14); color:#f1d2a9; border-color:rgba(212,166,107,.5); transform:translateY(-1px); }
+
+    /* Floating clouds */
+    .cloud {
+      position: absolute;
+      font-size: 3rem;
+      opacity: 0.06;
+      pointer-events: none;
+      animation: cloudDrift linear infinite;
+    }
+
+    @keyframes cloudDrift {
+      from { transform: translateX(-120px); }
+      to   { transform: translateX(calc(100vw + 120px)); }
+    }
+
+    @media (max-width: 900px) {
+      .picker-layout { grid-template-columns: 1fr; }
+      .controls-panel { position: static; }
+    }
+
+    @media (max-width: 500px) {
+      .topbar { padding: 0 20px; }
+      .picker-layout { padding: 0 16px 60px; }
+      .page-header { padding: 58px 20px 38px; }
+      .page-header h1 { max-width: 360px; }
+      .page-header h1 span { display: block; margin: .08em 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">Sky <span>Art</span></div>
+  <button class="back-btn" onclick="window.history.back()">
+    <i class="fas fa-arrow-left"></i> Terug
+  </button>
+</div>
+
+<div class="page-header">
+  <h1>✈️ Vliegtuig <span>Kleurenkiezer</span></h1>
+  <p>Ontwerp uw eigen kleurenschema — bekijk hoe het eruitziet vóór de lakbeurt</p>
+</div>
+
+<div class="picker-layout">
+
+  <!-- Controls -->
+  <div class="controls-panel">
+    <h2><i class="fas fa-palette" style="color:var(--c-sky);margin-right:8px"></i> Kleur kiezen</h2>
+
+    <div class="control-group">
+      <label>Kleurenkiezer</label>
+      <input type="color" id="colorPicker" value="#0ea5e9">
+    </div>
+
+    <div class="control-group">
+      <label for="accentPicker">Accentkleur</label>
+      <input type="color" id="accentPicker" value="#d4a66b">
+    </div>
+
+    <div class="control-group">
+      <label>Vooringestelde kleuren</label>
+      <div class="presets-grid" id="presetGrid">
+        <button class="preset active" data-color="#0ea5e9" style="background:#0ea5e9" title="Sky Blue"></button>
+        <button class="preset" data-color="#ef4444" style="background:#ef4444" title="Rood"></button>
+        <button class="preset" data-color="#10b981" style="background:#10b981" title="Groen"></button>
+        <button class="preset" data-color="#f59e0b" style="background:#f59e0b" title="Amber"></button>
+        <button class="preset" data-color="#8b5cf6" style="background:#8b5cf6" title="Paars"></button>
+        <button class="preset" data-color="#ec4899" style="background:#ec4899" title="Roze"></button>
+        <button class="preset" data-color="#14b8a6" style="background:#14b8a6" title="Turquoise"></button>
+        <button class="preset" data-color="#f97316" style="background:#f97316" title="Oranje"></button>
+        <button class="preset" data-color="#1e293b" style="background:#1e293b;border:1px solid rgba(255,255,255,0.1)" title="Navy"></button>
+        <button class="preset" data-color="#000000" style="background:#111;border:1px solid rgba(255,255,255,0.1)" title="Zwart"></button>
+        <button class="preset" data-color="#e2e8f0" style="background:#e2e8f0" title="Wit/Grijs"></button>
+        <button class="preset" data-color="#dc2626" style="background:linear-gradient(135deg,#dc2626,#f97316)" title="Rood-Oranje"></button>
+      </div>
+    </div>
+
+    <div class="color-info">
+      <div class="color-swatch" id="colorSwatch" style="background:#0ea5e9"></div>
+      <div class="color-code" id="colorCode">#0EA5E9</div>
+    </div>
+    <label class="design-option"><input type="checkbox" id="stripeToggle" checked> Contrasterende striping</label>
+    <label class="design-option"><input type="checkbox" id="metallicToggle"> Metallic lak-effect</label>
+    <p class="design-summary" id="designSummary">Basiskleur en accent worden live toegepast op het voorbeeld.</p>
+    <button class="share-design" id="shareDesign"><i class="fas fa-paper-plane"></i> Gebruik dit ontwerp voor mijn aanvraag</button>
+  </div>
+
+  <!-- Aircraft preview -->
+  <div class="aircraft-panel">
+    <span class="preview-label">Live ontwerpvoorbeeld</span>
+    <div class="cloud" style="top:10%;animation-duration:40s;animation-delay:-10s">☁️</div>
+    <div class="cloud" style="top:60%;animation-duration:55s;animation-delay:-25s;font-size:2rem">☁️</div>
+    <div class="cloud" style="top:35%;animation-duration:70s;animation-delay:-40s;font-size:4rem">☁️</div>
+
+    <div class="aircraft-container">
+      <img class="aircraft-photo" src="Assets/Foto's/vliegtuig-preview.png" alt="Vliegtuig in de gekozen kleurcombinatie">
+      <div class="paint-overlay" id="paintOverlay"></div>
+      <div class="stripe-overlay" id="stripeOverlay"></div>
+    </div>
+    <span class="blueprint-note">Conceptvisualisatie · geen technisch lakplan</span>
+    <span class="image-credit">Beeld: <a href="https://purepng.com/photo/25765/transportation-cars-white-plane" target="_blank" rel="noopener">PurePNG · CC0</a></span>
+  </div>
+
+</div>
+
+<script>
+  const colorPicker  = document.getElementById('colorPicker');
+  const colorSwatch  = document.getElementById('colorSwatch');
+  const colorCode    = document.getElementById('colorCode');
+  const paintOverlay = document.getElementById('paintOverlay');
+  const accentPicker = document.getElementById('accentPicker');
+  const stripeToggle = document.getElementById('stripeToggle');
+  const metallicToggle = document.getElementById('metallicToggle');
+  const designSummary = document.getElementById('designSummary');
+  const presets      = document.querySelectorAll('.preset');
+
+  function updateColor(color) {
+    paintOverlay.style.background = color;
+    colorSwatch.style.background  = color;
+    colorCode.textContent          = color.toUpperCase();
+    updateDesign();
+  }
+
+  function updateDesign() {
+    document.getElementById('stripeOverlay').style.background = accentPicker.value;
+    paintOverlay.classList.toggle('metallic', metallicToggle.checked);
+    document.getElementById('stripeOverlay').style.display = stripeToggle.checked ? '' : 'none';
+    designSummary.textContent = `Basiskleur ${colorPicker.value.toUpperCase()} · accent ${accentPicker.value.toUpperCase()} · ${metallicToggle.checked ? 'metallic afwerking' : 'glanzende afwerking'}${stripeToggle.checked ? ' · striping' : ''}`;
+  }
+
+  colorPicker.addEventListener('input', e => {
+    updateColor(e.target.value);
+    presets.forEach(p => p.classList.remove('active'));
+  });
+  [accentPicker, stripeToggle, metallicToggle].forEach(control => control.addEventListener('input', updateDesign));
+
+  presets.forEach(btn => {
+    btn.addEventListener('click', function () {
+      const color = this.dataset.color;
+      updateColor(color);
+      colorPicker.value = color.startsWith('#') && color.length === 7 ? color : '#0ea5e9';
+      presets.forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  updateColor('#0ea5e9');
+  document.getElementById('shareDesign').addEventListener('click', () => {
+    const design = `Mijn vliegtuigontwerp: basiskleur ${colorPicker.value}, accentkleur ${accentPicker.value}, ${metallicToggle.checked ? 'metallic lak' : 'glanzende lak'}${stripeToggle.checked ? ' met striping' : ''}.`;
+    window.location.href = `mailto:Skyart-creations@hotmail.com?subject=${encodeURIComponent('Mijn vliegtuigontwerp')}&body=${encodeURIComponent(design)}`;
+  });
+</script>
+</body>
+</html>

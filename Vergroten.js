@@ -1,35 +1,28 @@
-// Wacht tot de pagina volledig is geladen
-document.addEventListener('DOMContentLoaded', function() {
-    // Haal alle zoombare afbeeldingen op
-    const images = document.querySelectorAll('.comparison-image');
-    const modal = document.getElementById('imageModal');
+// Vergroten.js — image modal (handled by skyArt.js initImageModal)
+// Kept as fallback for standalone use
+
+document.addEventListener('DOMContentLoaded', function () {
+    const modal    = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImg');
     const closeBtn = document.querySelector('.close');
 
-    // Voeg click event toe aan alle afbeeldingen
-    images.forEach(img => {
-        img.addEventListener('click', function() {
-            modal.style.display = "block";
+    if (!modal) return;
+
+    document.querySelectorAll('.comparison-image').forEach(img => {
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', function () {
+            modal.style.display = 'flex';
             modalImg.src = this.src;
+            document.body.style.overflow = 'hidden';
         });
     });
 
-    // Sluit modal wanneer op X wordt geklikt
-    closeBtn.addEventListener('click', function() {
-        modal.style.display = "none";
-    });
+    function close() {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
 
-    // Sluit modal wanneer buiten de afbeelding wordt geklikt
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.style.display = "none";
-        }
-    });
-
-    // Sluit modal met escape toets
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.style.display === "block") {
-            modal.style.display = "none";
-        }
-    });
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    modal.addEventListener('click', e => { if (e.target === modal) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 });
