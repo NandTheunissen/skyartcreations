@@ -161,7 +161,7 @@ body {
 
 .hero-background {
   position: absolute; inset: 0;
-  background-image: url("Assets/Foto's/VliegtuigVoorGallerij1.png");
+  background-image: url("Assets/Foto's/Muurschildering-Urban-graffiti.jpeg");
   background-size: cover;
   background-position: center;
   transform-origin: center;
@@ -1781,18 +1781,18 @@ details.term .terms details.term[open] > summary {
   to   { opacity: 0.7; }
 }
 
-/* Vliegtuig */
-.ls-plane-wrap {
+/* Artistieke laadanimatie */
+.ls-art-mark-wrap {
   position: absolute;
   top: 45%;
   left: -400px;
   display: flex;
   align-items: center;
   gap: 0;
-  animation: planeFly 4s cubic-bezier(0.3, 0, 0.5, 1) 0.5s forwards;
+  animation: artMarkFly 4s cubic-bezier(0.3, 0, 0.5, 1) 0.5s forwards;
 }
 
-@keyframes planeFly {
+@keyframes artMarkFly {
   0%   { left: -400px; top: 45%; }
   30%  { top: 40%; }
   60%  { top: 47%; }
@@ -1814,16 +1814,16 @@ details.term .terms details.term[open] > summary {
   100% { width: 400px; opacity: 0; }
 }
 
-.ls-plane {
+.ls-art-mark {
   font-size: 5rem;
   filter: drop-shadow(0 0 20px rgba(56,189,248,0.9))
           drop-shadow(0 0 50px rgba(14,165,233,0.5));
-  animation: planeBob 0.5s ease-in-out infinite alternate;
+  animation: artMarkBob 0.5s ease-in-out infinite alternate;
   z-index: 2;
   line-height: 1;
 }
 
-@keyframes planeBob {
+@keyframes artMarkBob {
   from { transform: translateY(0) rotate(-2deg); }
   to   { transform: translateY(-8px) rotate(1deg); }
 }
@@ -2180,3 +2180,93 @@ body { background: #091522; letter-spacing: .005em; }
 .gallery-nav { border: 1px solid rgba(212,166,107,.28); background: rgba(10,22,34,.88); }
 .gallery-nav:hover { border-color: rgba(212,166,107,.7); background: #162a3b; }
 button:focus-visible,a:focus-visible { outline: 2px solid #e8c18f; outline-offset: 3px; }
+
+/* Art-first visual direction */
+:root {
+  --c-border: rgba(212,166,107,.18);
+  --c-sky: #d8b17d;
+  --c-sky-dim: #bd8954;
+  --c-sky-glow: rgba(216,177,125,.2);
+  --c-orange: #d8b17d;
+  --c-orange-glow: rgba(216,177,125,.22);
+  --c-muted: #aab6bd;
+  --c-subtle: #2d3e4a;
+}
+.art-hero-background {
+  background-image: url("Assets/Foto's/Muurschildering-Urban-graffiti.jpeg");
+  background-position: center 46%;
+  animation: none;
+  transform: scale(1.015);
+}
+.art-hero-background + .hero-overlay {
+  background: linear-gradient(90deg, rgba(5,14,24,.94) 0%, rgba(5,14,24,.78) 46%, rgba(5,14,24,.38) 100%),
+              linear-gradient(0deg, rgba(5,14,24,.7), transparent 45%);
+}
+.hero-grid { display: none; }
+.gallery-tab-btn.active,.gallery-tab-btn:hover { color: #f3d7b0; }
+@media (max-width: 600px) {
+  .art-hero-background { background-position: 57% center; }
+}
+
+.cookie-btn.accept { background:linear-gradient(135deg,#e4bd8b,#c9955d); color:#111922; box-shadow:0 4px 16px rgba(201,149,93,.22); }
+.cookie-btn.accept:hover { box-shadow:0 6px 22px rgba(201,149,93,.28); }
+.ls-grid { display:none; }
+.ls-bg { background:radial-gradient(ellipse at 50% 50%,rgba(212,166,107,.12),transparent 58%); }
+.ls-trail { background:linear-gradient(to left,rgba(212,166,107,.72),transparent); }
+.ls-art-mark { color:#e3c091; filter:drop-shadow(0 0 18px rgba(212,166,107,.48)); }
+
+/* Final polish: deliberate spacing, softer surfaces, and clearer interactions */
+:root { --font-display:'Inter','DM Sans',Arial,sans-serif; }
+.site-nav {
+  border-bottom:1px solid rgba(220,229,232,.1);
+  background:rgba(8,17,26,.88);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+.nav-logo { letter-spacing:-.055em; }
+.nav-tab-link { transition:color .2s ease,background .2s ease; }
+.nav-tab-link:hover { color:#f0d5b2; }
+.hero-content { max-width:1180px; }
+.hero-badge { border-color:rgba(225,236,243,.2); background:rgba(8,17,26,.44); backdrop-filter:blur(12px); }
+.hero-title { text-shadow:0 4px 36px rgba(0,0,0,.2); }
+.hero-subtitle { max-width:600px; line-height:1.75; }
+.btn-primary,.btn-outline,.nav-cta,.gallery-tab-btn,.gallery-nav,.reserve-btn,.request-btn,.share-design {
+  border-radius:8px;
+  transition:transform .22s ease,background .22s ease,border-color .22s ease,box-shadow .22s ease,color .22s ease;
+}
+.btn-primary:active,.btn-outline:active,.request-btn:active,.share-design:active { transform:translateY(0) scale(.985); }
+.section-title { font-weight:600; text-wrap:balance; }
+.section-subtitle { max-width:660px; line-height:1.75; }
+.service-card,.comparison-card,.contact-card,.color-tool-cta {
+  border-radius:12px;
+  border-color:rgba(220,229,232,.13);
+  box-shadow:0 18px 46px rgba(0,0,0,.14);
+}
+.service-card { background:linear-gradient(155deg,rgba(20,39,54,.88),rgba(10,22,33,.94)); }
+.service-card:hover { box-shadow:0 24px 55px rgba(0,0,0,.26),0 0 0 1px rgba(212,166,107,.12); }
+.gallery-tabs { gap:10px; }
+.gallery-tab-btn { min-height:42px; padding-inline:17px; }
+.gallery-container { border:1px solid rgba(220,229,232,.12); border-radius:14px; box-shadow:0 28px 75px rgba(0,0,0,.24); }
+.gallery-slide { background:#0d1a25; }
+.slide-image,.gallery-slide img { object-fit:cover; }
+.slide-info { background:linear-gradient(180deg,rgba(12,24,35,.94),rgba(9,18,27,.98)); }
+.gallery-project-tag { padding:7px 10px; border:1px solid rgba(212,166,107,.23); border-radius:999px; background:rgba(212,166,107,.07); }
+.gallery-nav { width:48px; height:48px; box-shadow:0 8px 24px rgba(0,0,0,.22); }
+.color-tool-cta { padding:clamp(25px,4vw,42px); gap:clamp(20px,3vw,36px); background:linear-gradient(135deg,rgba(20,39,54,.96),rgba(11,22,32,.98)); }
+.color-tool-preview { flex:0 0 auto; }
+.color-tool-text p,.contact-address { line-height:1.7; }
+.request-wrapper { border:1px solid rgba(220,229,232,.12); border-radius:16px; box-shadow:0 30px 90px rgba(0,0,0,.22); }
+.request-btn { min-height:48px; }
+.contact-card { transition:transform .22s ease,border-color .22s ease,background .22s ease; }
+.contact-card:hover { transform:translateY(-3px); border-color:rgba(212,166,107,.4); }
+.map-container { border:1px solid rgba(220,229,232,.12); border-radius:12px; overflow:hidden; box-shadow:0 18px 45px rgba(0,0,0,.2); }
+.social-link { transition:transform .2s ease,color .2s ease,background .2s ease; }
+.social-link:hover { transform:translateY(-2px); }
+@media(max-width:700px) {
+  .gallery-slider { border-radius:10px; }
+  .gallery-tab-btn { min-height:38px; padding-inline:13px; }
+  .color-tool-cta { border-radius:10px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .nav-tab-link,.service-card,.contact-card,.social-link { transition:none; }
+}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kleurenkiezer — Sky Art Creations</title>
+  <title>Online ontwerpstudio — Sky Art Creations</title>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
@@ -13,9 +13,9 @@
       --c-black: #09131e;
       --c-deep: #0c1927;
       --c-panel: #122537;
-      --c-border: rgba(190, 211, 224, 0.14);
-      --c-sky: #a8c6d4;
-      --c-sky-dim: #7599aa;
+      --c-border: rgba(212, 166, 107, 0.18);
+      --c-sky: #d8b17d;
+      --c-sky-dim: #bd8954;
       --c-muted: #a7b5bf;
       --c-white: #ffffff;
       --font-display: 'DM Sans', sans-serif;
@@ -58,7 +58,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(56,189,248,0.08);
+      background: rgba(212,166,107,0.08);
       border: 1px solid var(--c-border);
       color: var(--c-sky);
       padding: 10px 20px;
@@ -212,12 +212,12 @@
 
     .preset.active {
       border-color: var(--c-sky);
-      box-shadow: 0 0 0 3px rgba(56,189,248,0.3);
+      box-shadow: 0 0 0 3px rgba(212,166,107,0.3);
     }
 
     /* Color info */
     .color-info {
-      background: rgba(56,189,248,0.04);
+      background: rgba(212,166,107,0.04);
       border: 1px solid var(--c-border);
       border-radius: 14px;
       padding: 20px;
@@ -241,75 +241,6 @@
       letter-spacing: 0.1em;
     }
 
-    /* Aircraft preview */
-    .aircraft-panel {
-      background: var(--c-panel);
-      border: 1px solid var(--c-border);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 560px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Animated background */
-    .aircraft-panel::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 30% 50%, rgba(56,189,248,0.06), transparent 60%),
-        radial-gradient(circle at 70% 50%, rgba(14,165,233,0.04), transparent 60%);
-      pointer-events: none;
-    }
-
-    /* Grid lines effect */
-    .aircraft-panel::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-    }
-
-    .aircraft-container { position:relative; width:min(96%,1000px); z-index:1; padding:0; }
-    .aircraft-photo { display:block; width:100%; height:auto; filter:drop-shadow(0 24px 24px rgba(0,0,0,.34)); }
-    .paint-overlay,.stripe-overlay { position:absolute; inset:0; pointer-events:none; background:var(--plane-color,#0ea5e9); -webkit-mask-image:url("Assets/Foto's/vliegtuig-preview.png"); mask-image:url("Assets/Foto's/vliegtuig-preview.png"); mask-repeat:no-repeat; mask-position:center; mask-size:100% 100%; mix-blend-mode:multiply; opacity:.76; transition:background .25s ease,opacity .25s ease,filter .25s ease; }
-    .stripe-overlay { background:var(--plane-accent,#d4a66b); clip-path:polygon(0 59%,100% 55%,100% 59%,0 63%); opacity:.94; }
-    .paint-overlay.metallic { opacity:.9; filter:contrast(1.18) saturate(1.12); }
-    .blueprint-note { position:absolute; right:22px; bottom:18px; color:#8297a7; font: .68rem var(--font-body); letter-spacing:.12em; text-transform:uppercase; }
-    .image-credit { position:absolute; left:22px; bottom:18px; z-index:4; color:#8297a7; font: .68rem var(--font-body); }
-    .image-credit a { color:#aebec8; text-decoration:underline; text-underline-offset:3px; }
-
-    .aircraft-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      filter: drop-shadow(0 20px 50px rgba(0,0,0,0.6));
-      transition: filter 0.4s;
-    }
-
-    .color-overlay {
-      position: absolute;
-      inset: 0;
-      background: var(--c-sky-dim);
-      -webkit-mask-image: url("Assets/Foto's/vliegtuig_animatie_wit.png");
-      mask-image: url("Assets/Foto's/vliegtuig_animatie_wit.png");
-      mask-repeat: no-repeat;
-      mask-size: contain;
-      mask-position: center;
-      pointer-events: none;
-      z-index: 2;
-      transition: background 0.3s, opacity .3s;
-      mix-blend-mode: multiply;
-      opacity: .72;
-    }
-
     .design-option { display:flex; align-items:center; gap:12px; padding:13px 15px; margin-top:10px; border:1px solid rgba(183,211,226,.14); border-radius:10px; color:#dbe5eb; font-size:.9rem; background:rgba(255,255,255,.025); transition:border-color .2s,background .2s; }
     .design-option:hover { border-color:rgba(212,166,107,.45); background:rgba(255,255,255,.045); }
     .design-option input { accent-color:#d4a66b; width:17px; height:17px; }
@@ -322,9 +253,21 @@
     .preset.active { border-color:#fff; box-shadow:0 0 0 2px #122537,0 0 0 4px #d4a66b; }
     .color-info { border-radius:10px; background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.015)); }
     .controls-panel { border-color:rgba(183,211,226,.16); background:linear-gradient(155deg,#142a3c,#0c1927); box-shadow:0 22px 60px rgba(0,0,0,.2); }
-    .aircraft-panel { background:radial-gradient(ellipse at 50% 55%,#263d50 0%,#0c1927 72%); border-color:rgba(201,220,232,.16); }
+
     .back-btn { border-radius:8px; background:rgba(255,255,255,.04); color:#e2bd8e; border-color:rgba(212,166,107,.25); font-family:var(--font-body); font-weight:500; }
     .back-btn:hover { background:rgba(212,166,107,.14); color:#f1d2a9; border-color:rgba(212,166,107,.5); transform:translateY(-1px); }
+    .art-canvas-caption { position:absolute; right:28px; bottom:23px; color:rgba(255,255,255,.75); font:600 .62rem var(--font-body); letter-spacing:.15em; }
+    .artwork-panel { min-height:560px; }
+    .artwork-panel::before { background:radial-gradient(circle at 50% 50%,rgba(212,166,107,.09),transparent 62%); }
+    .artwork-panel::after { opacity:.55; }
+    @media(max-width:500px){ .art-canvas-caption { right:22px; bottom:22px; font-size:.52rem; } }
+    .artwork-panel { background:radial-gradient(ellipse at 50% 52%,#283e50 0%,#0c1927 74%); border:1px solid rgba(190,211,224,.16); border-radius:10px; display:flex; align-items:center; justify-content:center; min-height:560px; position:relative; overflow:hidden; }
+    .artwork-panel::before,.artwork-panel::after { content:""; position:absolute; inset:0; pointer-events:none; }
+    .artwork-panel::before { background:radial-gradient(circle at 50% 50%,rgba(212,166,107,.08),transparent 62%); }
+    .artwork-panel::after { background-image:linear-gradient(rgba(190,211,224,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(190,211,224,.025) 1px,transparent 1px); background-size:40px 40px; }
+    .art-canvas-wrap,.preview-label,.blueprint-note { z-index:1; }
+    .blueprint-note { position:absolute; right:22px; bottom:18px; color:#aebec8; font:.63rem var(--font-body); letter-spacing:.08em; text-transform:uppercase; }
+    .blueprint-note { font-size:.63rem; letter-spacing:.08em; }
 
     /* Floating clouds */
     .cloud {
@@ -352,6 +295,192 @@
       .page-header h1 { max-width: 360px; }
       .page-header h1 span { display: block; margin: .08em 0 0; }
     }
+    .back-btn { background:rgba(212,166,107,.07); }
+    .preset:hover { box-shadow:0 8px 25px rgba(212,166,107,.2); }
+    .preset.active { box-shadow:0 0 0 3px rgba(212,166,107,.32); }
+    .color-info { background:rgba(212,166,107,.045); }
+    .artwork-panel { background:radial-gradient(ellipse at 50% 52%,#283b49 0%,#101c26 74%); }
+    .idea-input { width:100%; min-height:112px; resize:vertical; padding:13px 14px; border:1px solid var(--c-border); border-radius:8px; background:rgba(255,255,255,.035); color:#f4f1eb; font:400 .92rem/1.55 var(--font-body); outline:none; }
+    .idea-input::placeholder { color:#8796a0; }
+    .idea-input:focus { border-color:rgba(212,166,107,.7); box-shadow:0 0 0 3px rgba(212,166,107,.12); }
+    .field-hint { margin-top:7px; color:#91a0aa; font-size:.76rem; line-height:1.5; }
+    .upload-btn { display:flex; align-items:center; justify-content:center; gap:9px; min-height:46px; border:1px dashed rgba(212,166,107,.48); border-radius:8px; background:rgba(212,166,107,.05); color:#ead1ae; cursor:pointer; font-size:.86rem; transition:background .2s,border-color .2s; }
+    .upload-btn:hover { border-color:#e4bd8b; background:rgba(212,166,107,.11); }
+    .file-input { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+    .range-group input[type="range"] { width:100%; accent-color:#d4a66b; }
+    .clear-drawing { width:100%; padding:10px 12px; border:1px solid rgba(183,211,226,.15); border-radius:8px; background:rgba(255,255,255,.025); color:#c2cdd3; font:500 .82rem var(--font-body); cursor:pointer; }
+    .clear-drawing:hover { border-color:rgba(212,166,107,.5); color:#f0d2ac; }
+    .share-hint { margin-top:9px; }
+    .artwork-panel { min-height:620px; padding:58px 22px 48px; }
+    .art-canvas-wrap { position:relative; width:min(100%,1000px); padding:0; border-radius:5px; overflow:hidden; box-shadow:0 26px 68px rgba(0,0,0,.38); }
+    .art-canvas { display:block; width:100%; height:auto; aspect-ratio:3/2; background:#ebe6dc; cursor:crosshair; touch-action:none; }
+    .art-canvas-caption { right:18px; bottom:15px; z-index:2; padding:6px 9px; border-radius:3px; background:rgba(9,19,30,.72); color:rgba(255,255,255,.88); font-size:.58rem; }
+    .blueprint-note { max-width:calc(100% - 32px); text-align:right; }
+    @media(max-width:900px) { .artwork-panel { min-height:500px; } .controls-panel { position:static; } }
+    @media(max-width:520px) { .artwork-panel { min-height:340px; padding:58px 13px 48px; } .art-canvas-caption { right:9px; bottom:9px; } }
+    /* Strakkere studio-indeling en bediening */
+    body { background:radial-gradient(ellipse at 78% 19%,rgba(212,166,107,.055),transparent 38%),#09131e; }
+    .topbar { height:68px; padding-inline:clamp(22px,5vw,72px); background:rgba(7,15,23,.94); border-color:rgba(207,220,225,.1); }
+    .logo { font-size:1.18rem; letter-spacing:-.04em; }
+    .back-btn { gap:9px; min-height:40px; padding:9px 15px; border-radius:6px; font-size:.82rem; }
+    .page-header { max-width:1360px; margin:0 auto; padding:60px 34px 32px; text-align:left; background:none; }
+    .page-header::before { content:'SKY ART CREATIONS  /  VRIJ ONTWERP'; margin-bottom:12px; color:#d8b17d; font-size:.66rem; letter-spacing:.16em; }
+    .page-header h1 { margin:0 0 12px; max-width:760px; font-size:clamp(2.25rem,4.7vw,3.55rem); line-height:1.05; letter-spacing:-.055em; font-weight:600; }
+    .page-header h1 span { color:#dfbd90; margin-left:.08em; }
+    .page-header p { max-width:720px; margin:0; font-size:.96rem; line-height:1.65; color:#aab6bd; }
+    .picker-layout { max-width:1360px; padding:14px 34px 76px; grid-template-columns:minmax(310px,360px) minmax(0,1fr); gap:22px; align-items:start; }
+    .controls-panel { position:sticky; top:84px; padding:22px; border-radius:10px; border-color:rgba(208,220,225,.11); background:linear-gradient(155deg,rgba(20,37,52,.96),rgba(12,24,36,.98)); box-shadow:0 18px 55px rgba(0,0,0,.22); }
+    .controls-panel h2 { margin-bottom:18px; padding-bottom:15px; border-color:rgba(208,220,225,.1); font-size:1.08rem; font-weight:600; }
+    .control-group { margin-bottom:17px; }
+    .control-group label { margin-bottom:8px; font-size:.71rem; letter-spacing:.09em; }
+    .idea-input { min-height:100px; padding:12px 13px; border-radius:6px; font-size:.84rem; }
+    .field-hint { font-size:.72rem; }
+    .upload-btn { min-height:42px; justify-content:flex-start; padding:0 13px; border-radius:6px; font-size:.81rem; }
+    .file-meta { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .file-meta .field-hint { overflow-wrap:anywhere; }
+    .remove-image { flex:0 0 auto; border:0; padding:4px 0; background:none; color:#dfbd90; font:500 .72rem var(--font-body); cursor:pointer; }
+    .remove-image:hover { color:#fff0d7; text-decoration:underline; }
+    .remove-image[hidden] { display:none; }
+    .brush-color-group > input[type="color"],.control-group > input[type="color"] { width:100%; height:42px; border:1px solid rgba(208,220,225,.14); border-radius:6px; padding:4px; background:rgba(255,255,255,.035); }
+    .presets-grid { grid-template-columns:repeat(6,minmax(0,1fr)); gap:7px; }
+    .preset { height:34px; border-radius:5px; }
+    .preset:hover { transform:translateY(-1px); box-shadow:0 5px 14px rgba(212,166,107,.16); }
+    .preset.active { border-color:#fff; box-shadow:0 0 0 1px #122537,0 0 0 2px #d4a66b; }
+    .range-group { margin-bottom:13px; }
+    .range-group label { display:flex; justify-content:space-between; }
+    .range-group input[type="range"] { height:16px; cursor:pointer; }
+    .canvas-actions { display:grid; grid-template-columns:1fr 1.2fr; gap:8px; margin:4px 0 15px; }
+    .undo-drawing,.clear-drawing { min-height:38px; display:flex; align-items:center; justify-content:center; gap:7px; padding:8px 9px; border:1px solid rgba(190,211,224,.14); border-radius:6px; background:rgba(255,255,255,.025); color:#d0d8dc; font:500 .74rem var(--font-body); cursor:pointer; transition:color .18s,border-color .18s,background .18s; }
+    .undo-drawing:hover:not(:disabled),.clear-drawing:hover { border-color:rgba(212,166,107,.5); background:rgba(212,166,107,.08); color:#f3d7b0; }
+    .undo-drawing:disabled { cursor:default; opacity:.42; }
+    .undo-drawing span { color:#8796a0; font-size:.65rem; }
+    .color-info { display:flex; align-items:center; gap:13px; margin-top:2px; padding:11px 12px; border-radius:6px; text-align:left; }
+    .color-swatch { flex:0 0 52px; height:28px; margin:0; border-radius:4px; box-shadow:none; }
+    .color-code { font-size:.88rem; letter-spacing:.08em; }
+    .design-summary { min-height:36px; margin-top:12px; font-size:.75rem; }
+    .share-design { min-height:45px; margin-top:10px; padding:12px 15px; border-radius:6px; font-size:.82rem; }
+    .share-design:disabled { opacity:.65; cursor:wait; }
+    .share-hint { font-size:.68rem; }
+    .artwork-panel { min-width:0; min-height:640px; padding:58px 28px 40px; border-radius:10px; border-color:rgba(208,220,225,.13); background:radial-gradient(ellipse at 52% 45%,#182a38 0%,#0d1923 70%); }
+    .artwork-panel::before { background:radial-gradient(circle at 52% 45%,rgba(212,166,107,.07),transparent 66%); }
+    .artwork-panel::after { background-image:linear-gradient(rgba(207,220,225,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(207,220,225,.018) 1px,transparent 1px); background-size:48px 48px; }
+    .preview-label { top:19px; left:22px; font-size:.64rem; letter-spacing:.12em; color:#c5ced2; }
+    .art-canvas-wrap { z-index:1; width:min(100%,980px); border-radius:4px; box-shadow:0 28px 75px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.08); }
+    .art-canvas { cursor:crosshair; }
+    .blueprint-note { right:20px; bottom:15px; color:#8c9ca5; font-size:.61rem; letter-spacing:.045em; text-transform:none; }
+    button:focus-visible,input:focus-visible,textarea:focus-visible,label.upload-btn:focus-visible { outline:2px solid #e8c18f; outline-offset:3px; }
+    @media(max-width:900px) { .page-header { padding:46px 24px 24px; } .picker-layout { padding:10px 24px 56px; grid-template-columns:minmax(270px,.8fr) minmax(0,1.2fr); gap:16px; } .controls-panel { padding:19px; } .artwork-panel { min-height:480px; padding-inline:17px; } }
+    @media(max-width:700px) { .picker-layout { grid-template-columns:1fr; } .controls-panel { order:2; } .artwork-panel { order:1; min-height:400px; } }
+    @media(max-width:520px) { .topbar { height:62px; padding-inline:18px; } .page-header { padding:38px 19px 19px; } .page-header h1 { font-size:2.15rem; } .page-header h1 span { display:inline; margin-left:.05em; } .page-header p { font-size:.88rem; } .picker-layout { padding:8px 16px 46px; gap:14px; } .controls-panel { padding:17px; } .artwork-panel { min-height:300px; padding:52px 12px 40px; } .preview-label { left:14px; top:15px; font-size:.58rem; } .blueprint-note { right:12px; bottom:10px; font-size:.55rem; } }
+    /* Eén scherm studio op desktop */
+    @media (min-width:701px) {
+      html,body { height:100%; min-height:0; overflow:hidden; }
+      body { display:grid; grid-template-rows:66px auto minmax(0,1fr); }
+      .topbar { position:relative; top:auto; height:66px; }
+      .page-header { width:100%; padding:20px 34px 8px; }
+      .page-header::before { margin-bottom:7px; font-size:.59rem; }
+      .page-header h1 { margin-bottom:7px; font-size:clamp(1.9rem,3vw,2.65rem); }
+      .page-header p { max-width:760px; font-size:.84rem; line-height:1.45; }
+      .picker-layout { width:100%; height:100%; min-height:0; padding:8px 34px 18px; grid-template-columns:minmax(305px,350px) minmax(0,1fr); gap:16px; overflow:hidden; }
+      .controls-panel { height:100%; min-height:0; overflow:hidden; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-content:start; gap:7px 12px; padding:13px; }
+      .controls-panel h2 { grid-column:1/-1; margin:0; padding-bottom:9px; font-size:1rem; }
+      .controls-panel .control-group { min-width:0; margin:0; }
+      .controls-panel .control-group:first-of-type,.controls-panel .control-group:nth-of-type(2),.controls-panel .control-group:nth-of-type(5) { grid-column:1/-1; }
+      .controls-panel .control-group label { margin-bottom:4px; font-size:.64rem; letter-spacing:.075em; }
+      .idea-input { min-height:52px; height:52px; padding:8px 10px; resize:none; font-size:.77rem; line-height:1.35; }
+      .controls-panel .control-group:first-of-type .field-hint,.brush-color-group .field-hint { display:none; }
+      .upload-btn { min-height:32px; padding-inline:10px; font-size:.74rem; }
+      .file-meta .field-hint { margin-top:3px; font-size:.64rem; line-height:1.25; }
+      .remove-image { font-size:.64rem; }
+      .brush-color-group > input[type="color"],.control-group > input[type="color"] { height:31px; padding:2px; }
+      .presets-grid { grid-template-columns:repeat(6,minmax(0,1fr)); gap:5px; }
+      .preset { height:24px; }
+      .range-group { align-self:center; }
+      .range-group label { margin-bottom:0!important; font-size:.6rem!important; white-space:nowrap; }
+      .range-group input[type="range"] { height:12px; }
+      .canvas-actions { grid-column:1/-1; display:grid; grid-template-columns:1fr 1.1fr; gap:6px; margin:0; }
+      .undo-drawing,.clear-drawing { min-height:30px; padding:5px 6px; font-size:.67rem; }
+      .color-info { display:none; }
+      .design-summary { grid-column:1/-1; min-height:0; margin:0; overflow:hidden; font-size:.66rem; line-height:1.3; white-space:nowrap; text-overflow:ellipsis; }
+      .share-design { grid-column:1/-1; min-height:35px; margin:0; padding:8px 10px; font-size:.75rem; }
+      .share-hint { grid-column:1/-1; margin:0; overflow:hidden; font-size:.59rem; line-height:1.25; white-space:nowrap; text-overflow:ellipsis; }
+      .artwork-panel { height:100%; min-height:0; padding:42px 20px 34px; }
+      .art-canvas-wrap { width:min(100%,calc((100svh - 220px)*1.5)); max-height:100%; }
+      .art-canvas { width:100%; height:auto; max-height:calc(100svh - 315px); }
+      .preview-label { top:14px; left:17px; font-size:.58rem; }
+      .blueprint-note { right:14px; bottom:10px; font-size:.56rem; }
+    }
+    @media (min-width:701px) and (max-height:780px) {
+      .page-header { padding-top:12px; padding-bottom:4px; }
+      .picker-layout { padding-top:5px; padding-bottom:10px; }
+      .controls-panel { gap:5px 10px; padding:10px; }
+      .controls-panel h2 { padding-bottom:6px; }
+      .idea-input { height:44px; min-height:44px; }
+      .controls-panel .control-group:nth-of-type(2) .file-meta { display:none; }
+      .preset { height:21px; }
+      .share-hint { display:none; }
+      .art-canvas-wrap { width:min(100%,calc((100svh - 280px)*1.5)); }
+      .art-canvas { max-height:calc(100svh - 300px); }
+    }
+    @media(max-width:700px) {
+      .controls-panel .control-group:first-of-type .field-hint,.brush-color-group .field-hint { display:block; }
+      .artwork-panel { order:1; }
+      .controls-panel { order:2; }
+    }
+    /* Afwerking: rustige atelier-interface met duidelijke nadruk op de preview */
+    :root { --c-sky:#d5aa78; --c-sky-dim:#bd8954; --c-border:rgba(220,229,232,.13); --c-muted:#abb8bf; }
+    body { background:radial-gradient(ellipse at 78% 8%,rgba(74,99,113,.2),transparent 38%),linear-gradient(145deg,#0b1722,#08111a 70%); }
+    .topbar { background:rgba(7,15,23,.88); border-bottom:1px solid rgba(220,229,232,.1); }
+    .logo { letter-spacing:-.055em; }
+    .logo span { color:#dfbd90; }
+    .page-header::before { color:#d5aa78; }
+    .page-header h1 { font-weight:550; letter-spacing:-.045em; }
+    .page-header h1 span { color:#e0bd91; }
+    .page-header p { max-width:690px; color:#aebac1; }
+    .controls-panel { border:1px solid rgba(220,229,232,.13); background:linear-gradient(155deg,rgba(23,39,51,.97),rgba(12,23,33,.98)); box-shadow:0 24px 70px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.04); }
+    .controls-panel h2 { color:#f5f3ef; }
+    .control-group label { color:#c0c9cd; }
+    .idea-input { background:rgba(4,10,16,.38); border-color:rgba(220,229,232,.15); color:#f5f3ef; }
+    .idea-input:focus { border-color:rgba(213,170,120,.72); box-shadow:0 0 0 3px rgba(213,170,120,.13); }
+    .idea-input::placeholder,.field-hint { color:#92a0a8; }
+    .upload-btn { border-color:rgba(213,170,120,.4); background:rgba(213,170,120,.06); color:#ecd5b7; }
+    .upload-btn:hover { background:rgba(213,170,120,.12); }
+    .brush-color-group > input[type="color"],.control-group > input[type="color"],#colorPicker { border-color:rgba(220,229,232,.16); border-radius:8px; }
+    .preset { border-radius:50%; aspect-ratio:1; }
+    .preset:hover { transform:scale(1.1); }
+    .preset.active { box-shadow:0 0 0 2px #142637,0 0 0 3px #e0bd91; }
+    .palette-mixer-row { display:flex; align-items:center; gap:10px; margin-top:9px; }
+    .palette-mixer { min-height:35px; display:inline-flex; align-items:center; justify-content:space-between; gap:9px; padding:0 11px; border:1px solid rgba(213,170,120,.3); border-radius:6px; background:rgba(213,170,120,.08); color:#ead2b2; font:500 .73rem var(--font-body); cursor:pointer; transition:background .2s,border-color .2s,transform .2s; }
+    .palette-mixer:hover { transform:translateY(-1px); background:rgba(213,170,120,.15); border-color:rgba(213,170,120,.6); }
+    .palette-mixer > i:last-child { color:#ad8c67; font-size:.65rem; }
+    .palette-name { min-width:0; color:#91a0a8; font-size:.69rem; line-height:1.3; }
+    .range-group input[type="range"] { accent-color:#d5aa78; }
+    .undo-drawing,.clear-drawing { border-radius:7px; }
+    .share-design { color:#151a20; background:linear-gradient(135deg,#ebcca2,#c9955d); border-color:rgba(249,224,190,.56); box-shadow:0 9px 24px rgba(190,137,84,.2),inset 0 1px rgba(255,255,255,.3); font-weight:600; }
+    .share-design:hover { background:linear-gradient(135deg,#f3d8b3,#d9a96f); }
+    .artwork-panel { border:1px solid rgba(220,229,232,.15); background:radial-gradient(ellipse at 48% 43%,#233746,#0d1923 72%); box-shadow:inset 0 1px rgba(255,255,255,.03); }
+    .art-canvas-wrap { border-radius:7px; box-shadow:0 32px 86px rgba(0,0,0,.48),0 0 0 1px rgba(255,255,255,.11); }
+    .art-canvas { background:#f3efe6; }
+    button:focus-visible,input:focus-visible,textarea:focus-visible,label.upload-btn:focus-visible { outline-color:#f0cb9c; }
+    @media(min-width:701px) {
+      .palette-mixer-row { margin-top:6px; gap:7px; }
+      .palette-mixer { min-height:31px; gap:7px; padding-inline:8px; font-size:.67rem; }
+      .palette-name { font-size:.61rem; }
+      .controls-panel { border-radius:9px; }
+      .artwork-panel { border-radius:9px; }
+    }
+    @media(min-width:701px) and (max-height:780px) {
+      .palette-mixer { min-height:26px; }
+      .palette-mixer > i:last-child,.palette-name { display:none; }
+      .palette-mixer-row { margin-top:4px; }
+    }
+    @media(max-width:700px) {
+      .palette-mixer-row { flex-wrap:wrap; }
+      .palette-mixer { min-height:40px; }
+      .palette-name { flex:1 1 100%; }
+      .art-canvas { min-height:180px; }
+    }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; transition-duration:.01ms!important; } }
   </style>
 </head>
 <body>
@@ -364,118 +493,340 @@
 </div>
 
 <div class="page-header">
-  <h1>✈️ Vliegtuig <span>Kleurenkiezer</span></h1>
-  <p>Ontwerp uw eigen kleurenschema — bekijk hoe het eruitziet vóór de lakbeurt</p>
+  <h1>Online <span>ontwerpstudio</span></h1>
+  <p>Upload een eigen schets of foto, teken rechtstreeks op het vlak en experimenteer live met kleuren. Je concept kun je daarna als afbeelding met je aanvraag delen.</p>
 </div>
 
 <div class="picker-layout">
 
-  <!-- Controls -->
-  <div class="controls-panel">
-    <h2><i class="fas fa-palette" style="color:var(--c-sky);margin-right:8px"></i> Kleur kiezen</h2>
-
-    <div class="control-group">
-      <label>Kleurenkiezer</label>
-      <input type="color" id="colorPicker" value="#0ea5e9">
+  <section class="controls-panel" aria-label="Concept instellen">
+    <h2><i class="fas fa-lightbulb" style="color:var(--c-sky);margin-right:8px"></i> Start met je idee</h2>
+    <div class="control-group"><label for="ideaText">Wat wil je maken?</label><textarea class="idea-input" id="ideaText" rows="4" placeholder="Bijvoorbeeld: een groene draak met gouden details op mijn helm"></textarea><p class="field-hint">Je omschrijving komt mee in de preview en de mail.</p></div>
+    <div class="control-group"><label for="referenceImage">Eigen foto of schets</label><label class="upload-btn" for="referenceImage"><i class="fas fa-image"></i><span id="uploadLabel">Upload een afbeelding</span></label><input class="file-input" type="file" id="referenceImage" accept="image/*"><div class="file-meta"><p class="field-hint" id="fileName">Of teken zelf op het lege ontwerpvlak.</p><button type="button" id="removeImage" class="remove-image" hidden>Verwijder foto</button></div></div>
+    <div class="control-group"><label for="colorPicker">Kies de hoofdkleur</label><input type="color" id="colorPicker" value="#e84b3c"></div>
+    <div class="control-group brush-color-group"><label for="accentPicker">Penseelkleur voor onderdelen</label><input type="color" id="accentPicker" value="#d4a66b"><p class="field-hint">Verf over een deel van je foto. Kies daarna een andere penseelkleur voor een volgend deel; eerdere streken houden hun kleur.</p></div>
+    <div class="control-group"><label>Kleurenpalet</label><div class="presets-grid" id="presetGrid">
+      <button class="preset active" data-color="#e84b3c" style="background:#e84b3c" title="Koraalrood" aria-label="Koraalrood"></button><button class="preset" data-color="#f0b429" style="background:#f0b429" title="Okergeel" aria-label="Okergeel"></button><button class="preset" data-color="#147d72" style="background:#147d72" title="Diepgroen" aria-label="Diepgroen"></button><button class="preset" data-color="#3157c8" style="background:#3157c8" title="Ultramarijn" aria-label="Ultramarijn"></button><button class="preset" data-color="#a04cc2" style="background:#a04cc2" title="Violet" aria-label="Violet"></button><button class="preset" data-color="#ef7b2d" style="background:#ef7b2d" title="Mandarijn" aria-label="Mandarijn"></button><button class="preset" data-color="#f08ab1" style="background:#f08ab1" title="Roze" aria-label="Roze"></button><button class="preset" data-color="#9dbb48" style="background:#9dbb48" title="Limoen" aria-label="Limoen"></button><button class="preset" data-color="#162332" style="background:#162332" title="Inktzwart" aria-label="Inktzwart"></button><button class="preset" data-color="#e9e2d2" style="background:#e9e2d2" title="Krijtwit" aria-label="Krijtwit"></button><button class="preset" data-color="#6a8caf" style="background:#6a8caf" title="Staalblauw" aria-label="Staalblauw"></button><button class="preset" data-color="#bb543d" style="background:linear-gradient(135deg,#bb543d,#f0b429)" title="Aardetinten" aria-label="Aardetinten"></button>
     </div>
-
-    <div class="control-group">
-      <label for="accentPicker">Accentkleur</label>
-      <input type="color" id="accentPicker" value="#d4a66b">
+    <div class="palette-mixer-row">
+      <button class="palette-mixer" id="paletteMixer" type="button"><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i><span>Mix een harmonieus palet</span><i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+      <span class="palette-name" id="paletteName" aria-live="polite">Samengesteld voor jouw ontwerp</span>
     </div>
-
-    <div class="control-group">
-      <label>Vooringestelde kleuren</label>
-      <div class="presets-grid" id="presetGrid">
-        <button class="preset active" data-color="#0ea5e9" style="background:#0ea5e9" title="Sky Blue"></button>
-        <button class="preset" data-color="#ef4444" style="background:#ef4444" title="Rood"></button>
-        <button class="preset" data-color="#10b981" style="background:#10b981" title="Groen"></button>
-        <button class="preset" data-color="#f59e0b" style="background:#f59e0b" title="Amber"></button>
-        <button class="preset" data-color="#8b5cf6" style="background:#8b5cf6" title="Paars"></button>
-        <button class="preset" data-color="#ec4899" style="background:#ec4899" title="Roze"></button>
-        <button class="preset" data-color="#14b8a6" style="background:#14b8a6" title="Turquoise"></button>
-        <button class="preset" data-color="#f97316" style="background:#f97316" title="Oranje"></button>
-        <button class="preset" data-color="#1e293b" style="background:#1e293b;border:1px solid rgba(255,255,255,0.1)" title="Navy"></button>
-        <button class="preset" data-color="#000000" style="background:#111;border:1px solid rgba(255,255,255,0.1)" title="Zwart"></button>
-        <button class="preset" data-color="#e2e8f0" style="background:#e2e8f0" title="Wit/Grijs"></button>
-        <button class="preset" data-color="#dc2626" style="background:linear-gradient(135deg,#dc2626,#f97316)" title="Rood-Oranje"></button>
-      </div>
     </div>
+    <div class="control-group range-group"><label for="tintStrength">Sterkte van de kleurlaag</label><input type="range" id="tintStrength" min="0" max="75" value="28"></div>
+    <div class="control-group range-group"><label for="brushSize">Dikte van je penseel</label><input type="range" id="brushSize" min="4" max="64" value="18"></div>
+    <div class="control-group range-group"><label for="brushOpacity">Sterkte penseelverf</label><input type="range" id="brushOpacity" min="20" max="100" value="72"></div>
+    <div class="canvas-actions"><button class="undo-drawing" type="button" id="undoDrawing" disabled><i class="fas fa-rotate-left"></i> Stap terug <span>Ctrl Z</span></button><button class="clear-drawing" type="button" id="clearDrawing"><i class="fas fa-eraser"></i> Wis penseelstreken</button></div>
+    <div class="color-info"><div class="color-swatch" id="colorSwatch" style="background:#e84b3c"></div><div class="color-code" id="colorCode">#E84B3C</div></div>
+    <p class="design-summary" id="designSummary">Upload een afbeelding of teken op het vlak. Je kleur en idee zie je meteen terug.</p>
+    <button class="share-design" id="shareDesign" type="button"><i class="fas fa-envelope"></i> Stuur concept met afbeelding</button>
+    <p class="field-hint share-hint">Waar delen met bijlage niet wordt ondersteund, download je de preview om die aan je mail toe te voegen.</p>
+  </section>
+  <section class="artwork-panel" aria-label="Live conceptpreview">
+    <span class="preview-label">Jouw vrije ontwerpvlak</span>
+    <div class="art-canvas-wrap"><canvas class="art-canvas" id="artCanvas" width="1440" height="960" role="img" aria-label="Leeg tekenvlak voor jouw custom-art concept"></canvas><span class="art-canvas-caption" id="canvasCaption">SKY ART · JOUW CONCEPT</span></div>
+    <span class="blueprint-note">Teken, upload of beschrijf — jouw concept blijft van jou</span>
+  </section></div>
 
-    <div class="color-info">
-      <div class="color-swatch" id="colorSwatch" style="background:#0ea5e9"></div>
-      <div class="color-code" id="colorCode">#0EA5E9</div>
-    </div>
-    <label class="design-option"><input type="checkbox" id="stripeToggle" checked> Contrasterende striping</label>
-    <label class="design-option"><input type="checkbox" id="metallicToggle"> Metallic lak-effect</label>
-    <p class="design-summary" id="designSummary">Basiskleur en accent worden live toegepast op het voorbeeld.</p>
-    <button class="share-design" id="shareDesign"><i class="fas fa-paper-plane"></i> Gebruik dit ontwerp voor mijn aanvraag</button>
-  </div>
-
-  <!-- Aircraft preview -->
-  <div class="aircraft-panel">
-    <span class="preview-label">Live ontwerpvoorbeeld</span>
-    <div class="cloud" style="top:10%;animation-duration:40s;animation-delay:-10s">☁️</div>
-    <div class="cloud" style="top:60%;animation-duration:55s;animation-delay:-25s;font-size:2rem">☁️</div>
-    <div class="cloud" style="top:35%;animation-duration:70s;animation-delay:-40s;font-size:4rem">☁️</div>
-
-    <div class="aircraft-container">
-      <img class="aircraft-photo" src="Assets/Foto's/vliegtuig-preview.png" alt="Vliegtuig in de gekozen kleurcombinatie">
-      <div class="paint-overlay" id="paintOverlay"></div>
-      <div class="stripe-overlay" id="stripeOverlay"></div>
-    </div>
-    <span class="blueprint-note">Conceptvisualisatie · geen technisch lakplan</span>
-    <span class="image-credit">Beeld: <a href="https://purepng.com/photo/25765/transportation-cars-white-plane" target="_blank" rel="noopener">PurePNG · CC0</a></span>
-  </div>
-
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@5/dist/email.min.js"></script>
 <script>
-  const colorPicker  = document.getElementById('colorPicker');
-  const colorSwatch  = document.getElementById('colorSwatch');
-  const colorCode    = document.getElementById('colorCode');
-  const paintOverlay = document.getElementById('paintOverlay');
+  // Eenmalig instellen in EmailJS: public key, service-ID en template-ID.
+  // Template: To Email={{to_email}}, met variabele bijlage design_image.
+  const EMAILJS_CONFIG = {
+    publicKey: 'VUL_JE_EMAILJS_PUBLIC_KEY_IN',
+    serviceId: 'VUL_JE_EMAILJS_SERVICE_ID_IN',
+    templateId: 'VUL_JE_EMAILJS_TEMPLATE_ID_IN',
+    recipient: 'Skyart-creations@hotmail.com'
+  };
+  const automaticEmailReady = Object.values(EMAILJS_CONFIG).every(value => value && !value.startsWith('VUL_'));
+  if (automaticEmailReady && window.emailjs) emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+
+  const canvas = document.getElementById('artCanvas');
+  const ctx = canvas.getContext('2d');
+  const colorPicker = document.getElementById('colorPicker');
   const accentPicker = document.getElementById('accentPicker');
-  const stripeToggle = document.getElementById('stripeToggle');
-  const metallicToggle = document.getElementById('metallicToggle');
+  const tintStrength = document.getElementById('tintStrength');
+  const brushSize = document.getElementById('brushSize');
+  const brushOpacity = document.getElementById('brushOpacity');
+  const ideaText = document.getElementById('ideaText');
+  const referenceImage = document.getElementById('referenceImage');
+  const fileName = document.getElementById('fileName');
+  const uploadLabel = document.getElementById('uploadLabel');
+  const removeImage = document.getElementById('removeImage');
+  const undoButton = document.getElementById('undoDrawing');
+  const colorSwatch = document.getElementById('colorSwatch');
+  const colorCode = document.getElementById('colorCode');
   const designSummary = document.getElementById('designSummary');
-  const presets      = document.querySelectorAll('.preset');
+  const presets = [...document.querySelectorAll('.preset')];
+  const paletteName = document.getElementById('paletteName');
+  const artPalettes = [
+    { name:'Atelier · terracotta & krijt', main:'#B85E45', accent:'#E9D7B7' },
+    { name:'Galerie · kobaltblauw & citroen', main:'#3157C8', accent:'#E6C64A' },
+    { name:'Nachtwerk · inkt & koper', main:'#182332', accent:'#C77B55' },
+    { name:'Botanisch · salie & pruim', main:'#829477', accent:'#65435B' },
+    { name:'Pop-art · fuchsia & mandarijn', main:'#D94F94', accent:'#EF7B2D' },
+    { name:'Aards · mos & zand', main:'#596B4E', accent:'#D9B98B' }
+  ];
+  let previousPalette = -1;
+  let uploadedImage = null;
+  let strokes = [];
+  let activeStroke = null;
 
-  function updateColor(color) {
-    paintOverlay.style.background = color;
-    colorSwatch.style.background  = color;
-    colorCode.textContent          = color.toUpperCase();
-    updateDesign();
+  function fittedImageRect(image) {
+    const padding = 42;
+    const maxWidth = canvas.width - padding * 2;
+    const maxHeight = canvas.height - padding * 2;
+    const ratio = Math.min(maxWidth / image.width, maxHeight / image.height);
+    const width = image.width * ratio;
+    const height = image.height * ratio;
+    return { x:(canvas.width-width)/2, y:(canvas.height-height)/2, width, height };
   }
 
-  function updateDesign() {
-    document.getElementById('stripeOverlay').style.background = accentPicker.value;
-    paintOverlay.classList.toggle('metallic', metallicToggle.checked);
-    document.getElementById('stripeOverlay').style.display = stripeToggle.checked ? '' : 'none';
-    designSummary.textContent = `Basiskleur ${colorPicker.value.toUpperCase()} · accent ${accentPicker.value.toUpperCase()} · ${metallicToggle.checked ? 'metallic afwerking' : 'glanzende afwerking'}${stripeToggle.checked ? ' · striping' : ''}`;
-  }
-
-  colorPicker.addEventListener('input', e => {
-    updateColor(e.target.value);
-    presets.forEach(p => p.classList.remove('active'));
-  });
-  [accentPicker, stripeToggle, metallicToggle].forEach(control => control.addEventListener('input', updateDesign));
-
-  presets.forEach(btn => {
-    btn.addEventListener('click', function () {
-      const color = this.dataset.color;
-      updateColor(color);
-      colorPicker.value = color.startsWith('#') && color.length === 7 ? color : '#0ea5e9';
-      presets.forEach(p => p.classList.remove('active'));
-      this.classList.add('active');
+  function drawIdeaText(text) {
+    const clean = text.trim();
+    if (!clean) return;
+    const bandHeight = 132;
+    ctx.fillStyle = 'rgba(9,19,30,.82)';
+    ctx.fillRect(0, canvas.height-bandHeight, canvas.width, bandHeight);
+    ctx.fillStyle = '#e3c091';
+    ctx.font = '600 22px Arial, sans-serif';
+    ctx.fillText('CONCEPTNOTITIE', 44, canvas.height-91);
+    ctx.fillStyle = '#fffaf2';
+    ctx.font = '500 31px Arial, sans-serif';
+    const words = clean.split(/\s+/);
+    let line = '';
+    let y = canvas.height-48;
+    const maxWidth = canvas.width-88;
+    const lines = [];
+    words.forEach(word => {
+      const next = line ? `${line} ${word}` : word;
+      if (ctx.measureText(next).width > maxWidth && line) { lines.push(line); line = word; }
+      else line = next;
     });
+    if (line) lines.push(line);
+    const visibleLines = lines.slice(0, 2);
+    y -= (visibleLines.length-1)*36;
+    visibleLines.forEach(value => { ctx.fillText(value, 44, y); y += 36; });
+  }
+
+  function redrawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#f3efe6';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    if (uploadedImage) {
+      const rect = fittedImageRect(uploadedImage);
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,.22)';
+      ctx.shadowBlur = 30;
+      ctx.shadowOffsetY = 12;
+      ctx.drawImage(uploadedImage, rect.x, rect.y, rect.width, rect.height);
+      ctx.restore();
+      const strength = Number(tintStrength.value) / 100;
+      if (strength > 0) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(rect.x, rect.y, rect.width, rect.height);
+        ctx.clip();
+        ctx.globalCompositeOperation = 'multiply';
+        ctx.globalAlpha = strength;
+        ctx.fillStyle = colorPicker.value;
+        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+        ctx.restore();
+      }
+    } else {
+      ctx.strokeStyle = 'rgba(34,47,57,.035)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x <= canvas.width; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+      for (let y = 0; y <= canvas.height; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+      ctx.strokeStyle = 'rgba(34,47,57,.12)';
+      ctx.strokeRect(28, 28, canvas.width-56, canvas.height-56);
+      if (!strokes.length && !ideaText.value.trim()) {
+        ctx.fillStyle = '#b5844f';
+        ctx.textAlign = 'center';
+        ctx.font = '600 18px Arial, sans-serif';
+        ctx.letterSpacing = '4px';
+        ctx.fillText('JOUW CREATIEVE STUDIO', canvas.width/2, canvas.height/2-64);
+        ctx.letterSpacing = '0px';
+        ctx.fillStyle = '#182332';
+        ctx.font = '600 42px Arial, sans-serif';
+        ctx.fillText('Ruimte voor jouw idee', canvas.width/2, canvas.height/2+4);
+        ctx.fillStyle = '#697780';
+        ctx.font = '400 22px Arial, sans-serif';
+        ctx.fillText('Kies een kleur, teken vrij of upload een eigen afbeelding', canvas.width/2, canvas.height/2+48);
+        ctx.textAlign = 'left';
+      }
+    }
+
+    strokes.forEach(stroke => {
+      if (!stroke.points.length) return;
+      ctx.beginPath();
+      ctx.strokeStyle = stroke.color;
+      ctx.lineWidth = stroke.size;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.globalCompositeOperation = uploadedImage ? 'multiply' : 'source-over';
+      ctx.globalAlpha = stroke.opacity;
+      ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+      stroke.points.slice(1).forEach(point => ctx.lineTo(point.x, point.y));
+      if (stroke.points.length === 1) ctx.lineTo(stroke.points[0].x+.1, stroke.points[0].y+.1);
+      ctx.stroke();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 1;
+    });
+    drawIdeaText(ideaText.value);
+    colorSwatch.style.background = colorPicker.value;
+    colorCode.textContent = colorPicker.value.toUpperCase();
+    const base = uploadedImage ? `Afbeelding: ${referenceImage.files[0]?.name || 'eigen afbeelding'}` : 'Vrij tekenvlak';
+    designSummary.textContent = `${base} · hoofdkleur ${colorPicker.value.toUpperCase()} · tekenkleur ${accentPicker.value.toUpperCase()} · ${strokes.length} getekende lijn${strokes.length === 1 ? '' : 'en'}.`;
+    undoButton.disabled = strokes.length === 0;
+  }
+
+  colorPicker.addEventListener('input', () => { presets.forEach(button => button.classList.toggle('active', button.dataset.color === colorPicker.value)); paletteName.textContent = 'Eigen kleurencombinatie'; redrawCanvas(); });
+  accentPicker.addEventListener('input', () => { paletteName.textContent = 'Eigen kleurencombinatie'; redrawCanvas(); });
+  tintStrength.addEventListener('input', redrawCanvas);
+  brushSize.addEventListener('input', redrawCanvas);
+  brushOpacity.addEventListener('input', redrawCanvas);
+  ideaText.addEventListener('input', redrawCanvas);
+  presets.forEach(button => button.addEventListener('click', () => {
+    colorPicker.value = button.dataset.color;
+    presets.forEach(item => item.classList.toggle('active', item === button));
+    paletteName.textContent = 'Eigen kleurencombinatie';
+    redrawCanvas();
+  }));
+  document.getElementById('paletteMixer').addEventListener('click', () => {
+    let index = Math.floor(Math.random() * artPalettes.length);
+    if (artPalettes.length > 1 && index === previousPalette) index = (index + 1) % artPalettes.length;
+    previousPalette = index;
+    const palette = artPalettes[index];
+    colorPicker.value = palette.main;
+    accentPicker.value = palette.accent;
+    presets.forEach(button => button.classList.toggle('active', button.dataset.color === palette.main));
+    paletteName.textContent = palette.name;
+    redrawCanvas();
   });
 
-  updateColor('#0ea5e9');
-  document.getElementById('shareDesign').addEventListener('click', () => {
-    const design = `Mijn vliegtuigontwerp: basiskleur ${colorPicker.value}, accentkleur ${accentPicker.value}, ${metallicToggle.checked ? 'metallic lak' : 'glanzende lak'}${stripeToggle.checked ? ' met striping' : ''}.`;
-    window.location.href = `mailto:Skyart-creations@hotmail.com?subject=${encodeURIComponent('Mijn vliegtuigontwerp')}&body=${encodeURIComponent(design)}`;
+  referenceImage.addEventListener('change', () => {
+    const file = referenceImage.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { fileName.textContent = 'Kies een afbeeldingsbestand.'; return; }
+    const image = new Image();
+    const imageUrl = URL.createObjectURL(file);
+    image.onload = () => { uploadedImage = image; URL.revokeObjectURL(imageUrl); uploadLabel.textContent = 'Kies een andere afbeelding'; fileName.textContent = file.name; removeImage.hidden = false; redrawCanvas(); };
+    image.onerror = () => { URL.revokeObjectURL(imageUrl); uploadedImage = null; fileName.textContent = 'Deze afbeelding kon niet worden geopend.'; redrawCanvas(); };
+    image.src = imageUrl;
   });
-</script>
+
+  function canvasPoint(event) {
+    const rect = canvas.getBoundingClientRect();
+    return { x:(event.clientX-rect.left)*canvas.width/rect.width, y:(event.clientY-rect.top)*canvas.height/rect.height };
+  }
+  canvas.addEventListener('pointerdown', event => {
+    event.preventDefault();
+    canvas.setPointerCapture(event.pointerId);
+    activeStroke = { color:accentPicker.value, opacity:Number(brushOpacity.value)/100, size:Number(brushSize.value)*canvas.width/canvas.getBoundingClientRect().width, points:[canvasPoint(event)] };
+    strokes.push(activeStroke);
+    redrawCanvas();
+  });
+  canvas.addEventListener('pointermove', event => {
+    if (!activeStroke) return;
+    activeStroke.points.push(canvasPoint(event));
+    redrawCanvas();
+  });
+  const finishStroke = () => { activeStroke = null; };
+  canvas.addEventListener('pointerup', finishStroke);
+  canvas.addEventListener('pointercancel', finishStroke);
+  undoButton.addEventListener('click', () => { activeStroke = null; strokes.pop(); redrawCanvas(); });
+  document.getElementById('clearDrawing').addEventListener('click', () => {
+    strokes = [];
+    redrawCanvas();
+  });
+  removeImage.addEventListener('click', () => {
+    uploadedImage = null;
+    referenceImage.value = '';
+    uploadLabel.textContent = 'Upload een afbeelding';
+    fileName.textContent = 'Of teken zelf op het lege ontwerpvlak.';
+    removeImage.hidden = true;
+    redrawCanvas();
+  });
+  document.addEventListener('keydown', event => {
+    const typing = ['INPUT','TEXTAREA'].includes(document.activeElement?.tagName);
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z' && !typing) {
+      event.preventDefault();
+      if (strokes.length) { activeStroke = null; strokes.pop(); redrawCanvas(); }
+    }
+  });
+
+  function canvasBlob() {
+    return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('De preview kon niet worden gemaakt.')), 'image/png'));
+  }
+  async function compactEmailImage() {
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 1200;
+    exportCanvas.height = 800;
+    exportCanvas.getContext('2d').drawImage(canvas, 0, 0, exportCanvas.width, exportCanvas.height);
+    for (const quality of [.76,.66,.56,.46,.36]) {
+      const blob = await new Promise(resolve => exportCanvas.toBlob(resolve, 'image/jpeg', quality));
+      if (!blob) throw new Error('De afbeelding kon niet worden klaargemaakt voor e-mail.');
+      if (blob.size <= 450 * 1024) {
+        return await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      }
+    }
+    throw new Error('De afbeelding is te groot om mee te mailen.');
+  }
+  function conceptText() {
+    return [
+      'Mijn custom-art idee:', ideaText.value.trim() || 'Vrij concept, zie de bijgevoegde preview.',
+      `Hoofdkleur: ${colorPicker.value.toUpperCase()}.`,
+      `Tekenkleur: ${accentPicker.value.toUpperCase()}.`,
+      `Gebruikte penseelkleuren: ${[...new Set(strokes.map(stroke => stroke.color.toUpperCase()))].join(', ') || 'geen'}.`,
+      `Kleurlaag op referentiefoto: ${tintStrength.value}%.`,
+      'De conceptafbeelding zit als bijlage bij dit bericht.'
+    ].join(String.fromCharCode(10));
+  }
+  document.getElementById('shareDesign').addEventListener('click', async () => {
+    const button = document.getElementById('shareDesign');
+    button.disabled = true;
+    try {
+      const blob = await canvasBlob();
+      const file = new File([blob], 'sky-art-concept.png', { type:'image/png' });
+      const text = conceptText();
+      if (automaticEmailReady && window.emailjs) {
+        const designImage = await compactEmailImage();
+        await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+          to_email: EMAILJS_CONFIG.recipient,
+          subject: 'Nieuw custom-art concept via de website',
+          concept_text: text,
+          idea: ideaText.value.trim() || 'Vrij concept',
+          main_color: colorPicker.value.toUpperCase(),
+          brush_colors: [...new Set(strokes.map(stroke => stroke.color.toUpperCase()))].join(', ') || 'Geen penseelstreken',
+          design_image: designImage
+        });
+        designSummary.textContent = `Je concept met afbeelding is automatisch verzonden naar ${EMAILJS_CONFIG.recipient}.`;
+      } else {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = file.name;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 30000);
+        window.location.href = `mailto:${encodeURIComponent(EMAILJS_CONFIG.recipient)}?subject=${encodeURIComponent('Mijn custom-art idee')}&body=${encodeURIComponent(text)}`;
+        designSummary.textContent = `Je e-mail opent met ${EMAILJS_CONFIG.recipient} ingevuld bij Aan. De preview is gedownload; voeg die toe als bijlage.`;
+      }
+    } catch (error) {
+      if (error.name !== 'AbortError') designSummary.textContent = 'De afbeelding kon niet gedeeld worden. Probeer de preview opnieuw te downloaden.';
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  redrawCanvas();</script>
 </body>
 </html>
